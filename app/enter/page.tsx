@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import React from 'react';
 
 function cls(...classnames: string[]) {
   return classnames.join(" ");
