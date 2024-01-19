@@ -11,7 +11,7 @@ const Community: NextPage = () => {
 
           <div className="mt-2 text-gray-700">
             <span className="text-orange-500 font-medium">Q.</span> What is the
-            best menu restaurant?
+            best mandu restaurant?
           </div>
 
           <div className="mt-5 flex w-full items-center justify-between text-gray-500 font-medium text-xs">
