@@ -1,11 +1,8 @@
 "use client";
 
+import { cls } from "@/app/_libs/utils";
 import { useState } from "react";
 import React from "react";
-
-function cls(...classnames: string[]) {
-  return classnames.join(" ");
-}
 
 export default function Enter() {
   const [method, setMethod] = useState<"email" | "phone">("email");
