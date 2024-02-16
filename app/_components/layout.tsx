@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { cls } from "../_libs/utils";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,9 +17,39 @@ export default function Layout({
   canGoBack,
   hasTabBar,
 }: LayoutProps) {
+  const router = useRouter();
+
+  const onClick = () => {
+    router.back();
+  };
+  //뒤로가기
+
   return (
     <div>
-      <div className="bg-white w-full max-w-lg mx-auto text-lg font-medium py-3 fixed text-gray-800 border-b top-0 flex justify-center items-center">
+      <div
+        className={cls(
+          !canGoBack ? "justify-center" : "",
+          "bg-white w-full max-w-lg mx-auto px-5 text-lg font-medium py-3 fixed text-gray-800 border-b top-0 flex items-center"
+        )}
+      >
+        {canGoBack ? (
+          <button onClick={onClick}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="w-7 h-7"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 19.5 8.25 12l7.5-7.5"
+              />
+            </svg>
+          </button>
+        ) : null}
         {title ? <span>{title}</span> : null}
       </div>
 
