@@ -1,3 +1,4 @@
+import FloatingButton from "@/app/_components/floating-button";
 import Layout from "@/app/_components/layout";
 import { NextPage } from "next";
 
@@ -11,7 +12,7 @@ const Live: NextPage = () => {
             <h3 className=" text-gray-700 text-lg mt-2">Let's try study</h3>
           </div>
         ))}
-        <button className="fixed bottom-24 right-5 bg-orange-400 rounded-full p-4 text-white shadow-xl hover:bg-orange-500 transition-colors cursor-pointer border-transparent ">
+        <FloatingButton href="streams/create">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -26,7 +27,7 @@ const Live: NextPage = () => {
               d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"
             />
           </svg>
-        </button>
+        </FloatingButton>
       </div>
     </Layout>
   );

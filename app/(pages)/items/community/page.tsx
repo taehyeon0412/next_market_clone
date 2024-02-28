@@ -1,12 +1,16 @@
+import FloatingButton from "@/app/_components/floating-button";
 import Layout from "@/app/_components/layout";
 import type { NextPage } from "next";
 
 const Community: NextPage = () => {
   return (
     <Layout hasTabBar title="동내생활">
-      <div className="px-4 space-y-8">
+      <div className="space-y-8">
         {[1, 2, 3, 4, 5, 6].map((_, i) => (
-          <div key={i} className="flex flex-col items-start cursor-pointer">
+          <div
+            key={i}
+            className="px-4 flex flex-col items-start cursor-pointer"
+          >
             <span className="flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
               동네질문
             </span>
@@ -62,7 +66,7 @@ const Community: NextPage = () => {
           </div>
         ))}
 
-        <button className="fixed bottom-24 right-5 bg-orange-400 rounded-full p-4 text-white shadow-xl hover:bg-orange-500 transition-colors cursor-pointer ">
+        <FloatingButton href="community/write">
           <svg
             className="w-6 h-6"
             fill="none"
@@ -77,7 +81,7 @@ const Community: NextPage = () => {
               d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
             ></path>
           </svg>
-        </button>
+        </FloatingButton>
       </div>
     </Layout>
   );
