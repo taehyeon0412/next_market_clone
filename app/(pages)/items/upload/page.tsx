@@ -1,3 +1,4 @@
+import Input from "@/app/_components/input";
 import Layout from "@/app/_components/layout";
 import type { NextPage } from "next";
 
@@ -26,52 +27,20 @@ const Upload: NextPage = () => {
           </label>
         </div>
 
-        <div className="my-5">
-          <label
-            htmlFor="name"
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
-            Name
-          </label>
-
-          <div className="rounded-md shadow-sm relative flex items-center">
-            <input
-              id="name"
-              className="appearance-none w-full py-2 border border-gray-300 rounded-md  shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
-              type="text"
-              placeholder="Name"
-            />
-          </div>
-        </div>
-
-        <div className="my-5">
-          <label
-            htmlFor="price"
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
-            Price
-          </label>
-
-          <div className="rounded-md shadow-sm relative flex items-center">
-            <div className="absolute pointer-events-none left-0 pl-3 flex items-center justify-center">
-              <span className="text-gray-500 text-sm">$</span>
-            </div>
-            <input
-              id="price"
-              className="appearance-none pl-7 w-full py-2 border border-gray-300 rounded-md  shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
-              type="text"
-              placeholder="0.00"
-            />
-            <div className="absolute pointer-events-none right-0 pr-3 flex items-center">
-              <span className="text-gray-500">USD</span>
-            </div>
-          </div>
-        </div>
+        <Input required label="Name" name="name" type="text" />
+        <Input
+          required
+          label="Price"
+          name="price"
+          placeholder="0.00"
+          type="text"
+          kind="price"
+        />
 
         <div>
           <label
             htmlFor="dsc"
-            className="mb-1 block text-sm font-medium text-gray-700"
+            className="mt-5 mb-1 block text-sm font-medium text-gray-700"
           >
             Description
           </label>
