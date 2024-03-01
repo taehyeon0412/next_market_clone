@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { cls } from "../_libs/utils";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -18,6 +18,7 @@ export default function Layout({
   hasTabBar,
 }: LayoutProps) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const onClick = () => {
     router.back();
@@ -58,7 +59,14 @@ export default function Layout({
       {hasTabBar ? (
         <nav className="bg-white max-w-lg text-gray-700 border-t fixed bottom-0 w-full px-10 pb-3 pt-3 flex justify-between text-xs">
           <Link href="/">
-            <div className="flex flex-col items-center space-y-2">
+            <div
+              className={cls(
+                "flex flex-col items-center space-y-2 ",
+                pathname === "/"
+                  ? "text-orange-500"
+                  : "hover:text-gray-500 transition-colors"
+              )}
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -78,7 +86,14 @@ export default function Layout({
           </Link>
 
           <Link href="/items/community">
-            <div className="flex flex-col items-center space-y-2">
+            <div
+              className={cls(
+                "flex flex-col items-center space-y-2 ",
+                pathname === "/items/community"
+                  ? "text-orange-500"
+                  : "hover:text-gray-500 transition-colors"
+              )}
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -98,7 +113,14 @@ export default function Layout({
           </Link>
 
           <Link href="/chats">
-            <div className="flex flex-col items-center space-y-2">
+            <div
+              className={cls(
+                "flex flex-col items-center space-y-2 ",
+                pathname === "/chats"
+                  ? "text-orange-500"
+                  : "hover:text-gray-500 transition-colors"
+              )}
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -118,7 +140,14 @@ export default function Layout({
           </Link>
 
           <Link href="/streams">
-            <div className="flex flex-col items-center space-y-2">
+            <div
+              className={cls(
+                "flex flex-col items-center space-y-2 ",
+                pathname === "/streams"
+                  ? "text-orange-500"
+                  : "hover:text-gray-500 transition-colors"
+              )}
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -138,7 +167,14 @@ export default function Layout({
           </Link>
 
           <Link href="/profile">
-            <div className="flex flex-col items-center space-y-2">
+            <div
+              className={cls(
+                "flex flex-col items-center space-y-2 ",
+                pathname === "/profile"
+                  ? "text-orange-500"
+                  : "hover:text-gray-500 transition-colors"
+              )}
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
