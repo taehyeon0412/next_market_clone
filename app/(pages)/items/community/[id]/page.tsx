@@ -1,4 +1,5 @@
 import Layout from "@/app/_components/layout";
+import TextArea from "@/app/_components/textarea";
 import { NextPage } from "next";
 
 const CommunityPostDetail: NextPage = () => {
@@ -82,10 +83,9 @@ const CommunityPostDetail: NextPage = () => {
         </div>
 
         <div className="px-4">
-          <textarea
-            className="mt-1 shadow-sm w-full  focus:ring-orange-500 rounded-md border-gray-300 focus:border-orange-500"
-            id="dsc"
-            rows={4}
+          <TextArea
+            name="description"
+            required
             placeholder="Answer this question!"
           />
 

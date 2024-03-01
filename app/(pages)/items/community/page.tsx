@@ -1,13 +1,15 @@
 import FloatingButton from "@/app/_components/floating-button";
 import Layout from "@/app/_components/layout";
 import type { NextPage } from "next";
+import Link from "next/link";
 
 const Community: NextPage = () => {
   return (
     <Layout hasTabBar title="동내생활">
       <div className="space-y-8">
         {[1, 2, 3, 4, 5, 6].map((_, i) => (
-          <div
+          <Link
+            href={`/items/community/${i}`}
             key={i}
             className="px-4 flex flex-col items-start cursor-pointer"
           >
@@ -63,7 +65,7 @@ const Community: NextPage = () => {
                 <span>답변 1</span>
               </span>
             </div>
-          </div>
+          </Link>
         ))}
 
         <FloatingButton href="community/write">

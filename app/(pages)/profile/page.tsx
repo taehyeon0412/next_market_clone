@@ -1,5 +1,6 @@
 import Layout from "@/app/_components/layout";
 import type { NextPage } from "next";
+import Link from "next/link";
 
 const Profile: NextPage = () => {
   return (
@@ -15,7 +16,10 @@ const Profile: NextPage = () => {
         </div>
 
         <div className="mt-10 flex justify-around ">
-          <div className="flex flex-col items-center cursor-pointer">
+          <Link
+            href={`profile/sold`}
+            className="flex flex-col items-center cursor-pointer"
+          >
             <div className="w-14 h-14 flex text-white bg-orange-500 rounded-full items-center justify-center">
               <svg
                 className="w-6 h-6"
@@ -36,9 +40,12 @@ const Profile: NextPage = () => {
             <span className="text-sm font-medium text-gray-700 mt-2">
               판매내역
             </span>
-          </div>
+          </Link>
 
-          <div className="flex flex-col items-center cursor-pointer">
+          <Link
+            href={`profile/bought`}
+            className="flex flex-col items-center cursor-pointer"
+          >
             <div className="w-14 h-14 flex text-white bg-orange-500 rounded-full items-center justify-center">
               <svg
                 className="w-6 h-6"
@@ -59,9 +66,12 @@ const Profile: NextPage = () => {
             <span className="text-sm font-medium text-gray-700 mt-2">
               구매내역
             </span>
-          </div>
+          </Link>
 
-          <div className="flex flex-col items-center cursor-pointer">
+          <Link
+            href={`profile/loved`}
+            className="flex flex-col items-center cursor-pointer"
+          >
             <div className="w-14 h-14 flex text-white bg-orange-500 rounded-full items-center justify-center">
               <svg
                 className="w-6 h-6"
@@ -82,7 +92,7 @@ const Profile: NextPage = () => {
             <span className="text-sm font-medium text-gray-700 mt-2">
               관심목록
             </span>
-          </div>
+          </Link>
         </div>
         {/* 프로필 메뉴 */}
 
