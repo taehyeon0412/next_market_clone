@@ -11,7 +11,9 @@ const Profile: NextPage = () => {
 
           <div className="flex flex-col">
             <span className="font-medium text-gray-900">Steve Jebs</span>
-            <span className="text-sm text-gray-700">Edit profile &rarr;</span>
+            <Link href={`profile/edit`}>
+              <span className="text-sm text-gray-700">Edit profile &rarr;</span>
+            </Link>
           </div>
         </div>
 

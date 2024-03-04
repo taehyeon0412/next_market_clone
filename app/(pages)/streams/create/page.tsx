@@ -1,3 +1,4 @@
+import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import Layout from "@/app/_components/layout";
 import TextArea from "@/app/_components/textarea";
@@ -27,9 +28,7 @@ const Create: NextPage = () => {
           <TextArea name="description" label="Description" />
         </div>
 
-        <button className="w-full bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 border border-transparent rounded-md shadow-sm text-sm text-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none">
-          Go live
-        </button>
+        <Button text="Go live" />
       </div>
     </Layout>
   );

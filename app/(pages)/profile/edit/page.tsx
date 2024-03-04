@@ -1,3 +1,4 @@
+import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import Layout from "@/app/_components/layout";
 import { NextPage } from "next";
@@ -5,7 +6,7 @@ import { NextPage } from "next";
 const EditProfile: NextPage = () => {
   return (
     <Layout canGoBack>
-      <div className="py-10 px-4 space-y-4">
+      <form className="py-10 px-4 space-y-4">
         <div className="flex items-center space-x-3">
           <div className="w-14 h-14 rounded-full bg-slate-500" />
           <label
@@ -31,10 +32,8 @@ const EditProfile: NextPage = () => {
           kind="phone"
         />
 
-        <button className="mt-5 w-full bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 border border-transparent rounded-md shadow-sm text-sm text-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none">
-          Update profile
-        </button>
-      </div>
+        <Button text="Update profile" />
+      </form>
     </Layout>
   );
 };
