@@ -18,6 +18,23 @@
 
 body {
   -ms-overflow-style: none;
+
+  /* Firefox */ /* Internet Explorer/Edge */
+  -webkit-user-select: none;
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Safari */
+  -webkit-user-drag: none; /* Safari and Chrome */
+  -khtml-user-drag: none; /* Konqueror */
+  -moz-user-drag: none; /* Old versions of Firefox */
+  -ms-user-drag: none; /* Internet Explorer/Edge */
+  user-drag: none; /* Non-prefixed version */
+
+  img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+  }
 }
 ::-webkit-scrollbar {
   display: none;
