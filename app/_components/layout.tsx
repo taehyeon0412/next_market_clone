@@ -39,13 +39,13 @@ export default function Layout({
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke="currentColor"
               className="w-7 h-7"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M15.75 19.5 8.25 12l7.5-7.5"
               />
             </svg>
@@ -58,11 +58,11 @@ export default function Layout({
 
       {hasTabBar ? (
         <nav className="bg-white max-w-lg text-gray-700 border-t fixed bottom-0 w-full px-10 pb-3 pt-3 flex justify-between text-xs">
-          <Link href="/">
+          <Link href="/home">
             <div
               className={cls(
                 "flex flex-col items-center space-y-2 ",
-                pathname === "/"
+                pathname === "/home"
                   ? "text-orange-500"
                   : "hover:text-gray-500 transition-colors"
               )}
