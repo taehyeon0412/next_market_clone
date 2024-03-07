@@ -1,22 +1,44 @@
 "use client";
 
 import Button from "@/app/_components/button";
+import Input from "@/app/_components/input";
 import { cls } from "@/app/_libs/utils";
 import { useState } from "react";
 import React from "react";
+import { useForm } from "react-hook-form";
+
+interface EnterForm {
+  email?: string;
+  phone?: string;
+}
 
 export default function Enter() {
+  const { register, handleSubmit, watch, reset } = useForm<EnterForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
-  const onEmailClick = () => setMethod("email");
-  const onPhoneClick = () => setMethod("phone");
+
+  const onEmailClick = () => {
+    reset(); //탭바꾸면 input reset
+    setMethod("email");
+  };
+
+  const onPhoneClick = () => {
+    reset();
+    setMethod("phone");
+  };
+
+  const onValid = (data: EnterForm) => {
+    console.log(data);
+  };
+
+  /* console.log(watch()); */
 
   return (
     <div className="mt-16 px-4">
-      <h3 className="text-3xl font-bold text-center">Enter to Carrot</h3>
+      <h3 className="text-3xl font-bold text-center">마켓 시작하기</h3>
 
       <div className="mt-8">
         <div className="flex flex-col items-center">
-          <h5 className="text-sm text-gray-500 font-medium">Enter using:</h5>
+          <h5 className="text-sm text-gray-500 font-medium">입장하기 :</h5>
           <div className="grid grid-cols-2 gap-16 mt-8  w-full pb-4 ">
             <button
               className={cls(
@@ -27,7 +49,7 @@ export default function Enter() {
               )}
               onClick={onEmailClick}
             >
-              Email
+              이메일
             </button>
             <button
               className={cls(
@@ -38,43 +60,40 @@ export default function Enter() {
               )}
               onClick={onPhoneClick}
             >
-              Phone
+              휴대폰
             </button>
           </div>
         </div>
 
-        <form className="flex flex-col mt-8">
-          <label htmlFor="input" className="text-sm font-medium text-gray-700">
-            {method === "email" ? "Email address" : null}
-            {method === "phone" ? "Phone number" : null}
-          </label>
+        <form onSubmit={handleSubmit(onValid)} className="flex flex-col">
           <div className="mt-1">
             {method === "email" ? (
-              <input
-                id="input"
+              <Input
+                register={register("email", {
+                  required: true,
+                })} //Input에는 ...rest로 받게 해놔서 어떤 props든 가능함
+                name="email"
+                label="이메일 주소"
                 type="email"
-                required
-                className="appearance-none w-full py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
               />
             ) : null}
+
             {method === "phone" ? (
-              <div className="flex rounded-md shadow-sm">
-                <span className="flex items-center justify-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 select-none text-sm">
-                  +82
-                </span>
-                <input
-                  id="input"
-                  type="number"
-                  className="appearance-none w-full py-2 border border-gray-300 rounded-md rounded-l-none shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
-                  required
-                />
-              </div>
+              <Input
+                register={register("phone", {
+                  required: true,
+                })}
+                name="phone"
+                label="휴대전화 번호"
+                type="number"
+                kind="phone"
+              />
             ) : null}
           </div>
 
-          {method === "email" ? <Button text={"Get login link"} /> : null}
+          {method === "email" ? <Button text={"로그인 링크 보내기"} /> : null}
           {method === "phone" ? (
-            <Button text={"Get one-time password"} />
+            <Button text={"일회용 비밀번호 가져오기"} />
           ) : null}
         </form>
 
@@ -84,7 +103,7 @@ export default function Enter() {
             {/* 중간 라인 선 */}
             <div className="relative -top-3 text-center">
               <span className="bg-white px-2 text-sm text-gray-500">
-                Or enter with
+                다른 입장 방법
               </span>
             </div>
           </div>
