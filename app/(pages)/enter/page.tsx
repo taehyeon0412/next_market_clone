@@ -2,7 +2,7 @@
 
 import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
-import { cls } from "@/app/_libs/utils";
+import { cls } from "@/app/_libs/_client/utils";
 import { useState } from "react";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -27,14 +27,17 @@ export default function Enter() {
   };
 
   const onValid = (data: EnterForm) => {
-    console.log(data);
+    fetch("/api/users/auth", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
   };
 
   /* console.log(watch()); */
 
   return (
     <div className="mt-16 px-4">
-      <h3 className="text-3xl font-bold text-center">마켓 시작하기</h3>
+      <h3 className="text-3xl font-bold text-center">당근 마켓</h3>
 
       <div className="mt-8">
         <div className="flex flex-col items-center">
@@ -111,12 +114,16 @@ export default function Enter() {
           <div className="grid grid-cols-2 gap-3 mt-2">
             <button className="flex justify-center items-center py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
               <svg
+                xmlns="http://www.w3.org/2000/svg"
                 className="w-5 h-5"
                 aria-hidden="true"
                 fill="currentColor"
-                viewBox="0 0 20 20"
+                viewBox="0 0 24 24"
               >
-                <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
+                <g>
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M12 3c5.799 0 10.5 3.664 10.5 8.185 0 4.52-4.701 8.184-10.5 8.184a13.5 13.5 0 0 1-1.727-.11l-4.408 2.883c-.501.265-.678.236-.472-.413l.892-3.678c-2.88-1.46-4.785-3.99-4.785-6.866C1.5 6.665 6.201 3 12 3zm5.907 8.06l1.47-1.424a.472.472 0 0 0-.656-.678l-1.928 1.866V9.282a.472.472 0 0 0-.944 0v2.557a.471.471 0 0 0 0 .222V13.5a.472.472 0 0 0 .944 0v-1.363l.427-.413 1.428 2.033a.472.472 0 1 0 .773-.543l-1.514-2.155zm-2.958 1.924h-1.46V9.297a.472.472 0 0 0-.943 0v4.159c0 .26.21.472.471.472h1.932a.472.472 0 1 0 0-.944zm-5.857-1.092l.696-1.707.638 1.707H9.092zm2.523.488l.002-.016a.469.469 0 0 0-.127-.32l-1.046-2.8a.69.69 0 0 0-.627-.474.696.696 0 0 0-.653.447l-1.661 4.075a.472.472 0 0 0 .874.357l.33-.813h2.07l.299.8a.472.472 0 1 0 .884-.33l-.345-.926zM8.293 9.302a.472.472 0 0 0-.471-.472H4.577a.472.472 0 1 0 0 .944h1.16v3.736a.472.472 0 0 0 .944 0V9.774h1.14c.261 0 .472-.212.472-.472z" />
+                </g>
               </svg>
             </button>
 

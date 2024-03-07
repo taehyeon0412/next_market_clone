@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { cls } from "../_libs/utils";
+import { cls } from "../_libs/_client/utils";
 import { useRouter, usePathname } from "next/navigation";
 
 interface LayoutProps {
