@@ -14,7 +14,7 @@ export default function Input({
   return (
     <div>
       <label
-        className="my-5 mb-1 block text-sm font-medium text-gray-700"
+        className="my-3 mb-1 block text-sm font-medium text-gray-700"
         htmlFor={name}
       >
         {label}

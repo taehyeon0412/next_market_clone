@@ -60,11 +60,11 @@ export default function CreateAccount() {
           <Link href="/sms">
             <Button type="phone" text="휴대폰 번호로 가입하기" />
           </Link>
-        </div>
 
-        <Link href="/kakao/start">
-          <Button type="kakao" text="카카오톡으로 가입하기" />
-        </Link>
+          <Link href="/kakao/start">
+            <Button type="kakao" text="카카오톡으로 가입하기" />
+          </Link>
+        </div>
       </div>
     </Layout>
   );
