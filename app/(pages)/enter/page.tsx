@@ -5,6 +5,12 @@ import { cls } from "@/app/_libs/_client/utils";
 import React from "react";
 
 export default function Enter() {
+  const handleForm = async (formData: FormData) => {
+    "use server";
+    console.log(formData.get("email"), formData.get("password"));
+    console.log("i run in the server");
+  };
+
   return (
     <Layout canGoBack>
       <div className="mt-16 px-4">
@@ -73,7 +79,7 @@ export default function Enter() {
             <h5 className="text-sm text-gray-500 font-medium">입장하기 :</h5>
           </div>
 
-          <form /* action={handleForm} */ className="flex flex-col">
+          <form action={handleForm} className="flex flex-col">
             <div className="mt-1">
               <Input
                 name="email"
