@@ -1,14 +1,14 @@
 import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import Layout from "@/app/_components/layout";
-import { cls } from "@/app/_libs/_client/utils";
 import React from "react";
 
 export default function Enter() {
   const handleForm = async (formData: FormData) => {
     "use server";
-    console.log(formData.get("email"), formData.get("password"));
-    console.log("i run in the server");
+
+    await new Promise((resolve: any) => setTimeout(resolve, 5000));
+    console.log("유저 로그인");
   };
 
   return (
@@ -97,7 +97,7 @@ export default function Enter() {
               />
             </div>
 
-            <Button text={"로그인"} />
+            <Button text={"로그인"} type="login" />
           </form>
 
           <div className="mt-8">

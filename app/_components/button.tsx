@@ -1,3 +1,6 @@
+"use client";
+
+import { useFormStatus } from "react-dom";
 import { cls } from "../_libs/_client/utils";
 
 interface ButtonProps {
@@ -14,6 +17,10 @@ export default function Button({
   text,
   ...rest
 }: ButtonProps) {
+  const { pending } = useFormStatus();
+  //useFormStatus를 이용하여 부모 form의 pending상태를 알아냄
+  //useFormStatus는 form의 자식만 쓸 수 있음
+
   return type === "kakao" ? (
     <button
       {...rest}
@@ -60,6 +67,18 @@ export default function Button({
       </svg>
 
       {text}
+    </button>
+  ) : type === "login" ? (
+    <button
+      disabled={pending}
+      {...rest}
+      className={cls(
+        "mt-3 w-full text-white px-4 border border-transparent rounded-md shadow-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none",
+        large ? "py-3 text-base" : "py-2 text-sm",
+        pending ? "bg-gray-400" : "bg-orange-500 hover:bg-orange-600"
+      )}
+    >
+      {pending ? "로그인 중.." : text}
     </button>
   ) : (
     <button
