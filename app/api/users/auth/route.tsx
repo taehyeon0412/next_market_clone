@@ -8,3 +8,13 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ res });
 }
+
+const onClick = () => {
+  fetch("/api/users", {
+    method: "POST",
+    body: JSON.stringify({
+      username: "aa",
+      password: "1234",
+    }),
+  });
+};

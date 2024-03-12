@@ -2,14 +2,7 @@ import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import Layout from "@/app/_components/layout";
 import { cls } from "@/app/_libs/_client/utils";
-import { useState } from "react";
 import React from "react";
-import { useForm } from "react-hook-form";
-
-interface EnterForm {
-  email?: string;
-  phone?: string;
-}
 
 export default function Enter() {
   return (
