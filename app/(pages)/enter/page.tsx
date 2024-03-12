@@ -1,15 +1,18 @@
+"use client";
+
 import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import Layout from "@/app/_components/layout";
 import React from "react";
+import { handleForm } from "./action";
+import { useFormState } from "react-dom";
 
 export default function Enter() {
-  const handleForm = async (formData: FormData) => {
-    "use server";
-
-    await new Promise((resolve: any) => setTimeout(resolve, 5000));
-    console.log("유저 로그인");
-  };
+  const [state, action] = useFormState(handleForm, null);
+  /* from action을 실행하면 action.ts의  handleForm이 실행되고 
+  return 값을 state로 받아옴 
+  useFormState는 상호작용을 하므로 use client를 상단에 써야됨
+  */
 
   return (
     <Layout canGoBack>
@@ -79,13 +82,14 @@ export default function Enter() {
             <h5 className="text-sm text-gray-500 font-medium">입장하기 :</h5>
           </div>
 
-          <form action={handleForm} className="flex flex-col">
+          <form action={action} className="flex flex-col">
             <div className="mt-1">
               <Input
                 name="email"
                 label=""
                 type="email"
                 placeholder="이메일 주소"
+                errors={state?.error} //useFormState의 state를 받아오고 handleForm의 return값이 출력됨
                 required
               />
               <Input
@@ -93,6 +97,7 @@ export default function Enter() {
                 label=""
                 type="password"
                 placeholder="비밀번호"
+                errors={state?.error}
                 required
               />
             </div>

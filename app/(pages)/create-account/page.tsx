@@ -18,10 +18,11 @@ export default function CreateAccount() {
           <form>
             <div className="flex flex-col">
               <Input
-                label="ID"
-                name="id"
+                label="닉네임"
+                name="username"
                 type="text"
-                placeholder="아이디"
+                placeholder="닉네임"
+                errors={[]}
                 required
               />
               <Input
@@ -29,6 +30,7 @@ export default function CreateAccount() {
                 name="Email"
                 type="email"
                 placeholder="이메일 주소"
+                errors={[]}
                 required
               />
               <Input
@@ -36,6 +38,7 @@ export default function CreateAccount() {
                 name="PassWord"
                 type="password"
                 placeholder="비밀번호"
+                errors={[]}
                 required
               />
               <Input
@@ -43,11 +46,9 @@ export default function CreateAccount() {
                 name="PassWord Check"
                 type="password"
                 placeholder="비밀번호 확인"
+                errors={[]}
                 required
               />
-              <span className="text-red-500 text-xs font-semibold">
-                인풋 오류
-              </span>
             </div>
 
             <Button text="생성 완료" />
