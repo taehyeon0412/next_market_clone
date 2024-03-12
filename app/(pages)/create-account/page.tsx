@@ -45,20 +45,26 @@ export default function CreateAccount() {
                 placeholder="비밀번호 확인"
                 required
               />
-              <span>인풋 오류</span>
+              <span className="text-red-500 text-xs font-semibold">
+                인풋 오류
+              </span>
             </div>
 
             <Button text="생성 완료" />
           </form>
         </div>
 
-        <div className="bg-white w-full max-w-lg mx-auto px-5 py-5 border-b flex items-center" />
+        <div className="bg-white w-full max-w-lg mx-auto px-5 py-4 border-b flex items-center" />
 
         <div className="pt-4">
           <Link href="/sms">
-            <Button text="✉ 휴대폰 번호로 가입하기" />
+            <Button type="phone" text="휴대폰 번호로 가입하기" />
           </Link>
         </div>
+
+        <Link href="/kakao/start">
+          <Button type="kakao" text="카카오톡으로 가입하기" />
+        </Link>
       </div>
     </Layout>
   );

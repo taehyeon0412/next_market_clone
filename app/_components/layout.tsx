@@ -21,7 +21,11 @@ export default function Layout({
   const pathname = usePathname();
 
   const onClick = () => {
-    router.back();
+    if (pathname === "/create-account" || "/enter") {
+      router.push("/");
+    } else {
+      router.back();
+    }
   };
   //뒤로가기
 
