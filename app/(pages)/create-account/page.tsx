@@ -28,7 +28,6 @@ export default function CreateAccount() {
                 name="username"
                 type="text"
                 placeholder="닉네임"
-                required
                 errors={state?.fieldErrors.username}
               />
               <Input
@@ -36,7 +35,6 @@ export default function CreateAccount() {
                 name="email"
                 type="text"
                 placeholder="이메일 주소"
-                required
                 errors={state?.fieldErrors.email}
               />
               <Input
@@ -44,7 +42,6 @@ export default function CreateAccount() {
                 name="password"
                 type="password"
                 placeholder="비밀번호"
-                required
                 errors={state?.fieldErrors.password}
               />
               <Input
@@ -52,7 +49,6 @@ export default function CreateAccount() {
                 name="password_check"
                 type="password"
                 placeholder="비밀번호 확인"
-                required
                 errors={state?.fieldErrors.password_check}
               />
             </div>
