@@ -1,9 +1,15 @@
+"use client";
+
 import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import Layout from "@/app/_components/layout";
 import Link from "next/link";
+import { useFormState } from "react-dom";
+import { createAccount } from "./action";
 
 export default function CreateAccount() {
+  const [state, action] = useFormState(createAccount, null);
+
   return (
     <Layout canGoBack>
       <div className="px-4 py-4">
@@ -15,39 +21,39 @@ export default function CreateAccount() {
             </h2>
           </div>
 
-          <form>
+          <form action={action}>
             <div className="flex flex-col">
               <Input
                 label="닉네임"
                 name="username"
                 type="text"
                 placeholder="닉네임"
-                errors={[]}
                 required
+                errors={state?.fieldErrors.username}
               />
               <Input
                 label="Email"
-                name="Email"
-                type="email"
+                name="email"
+                type="text"
                 placeholder="이메일 주소"
-                errors={[]}
                 required
+                errors={state?.fieldErrors.email}
               />
               <Input
                 label="비밀번호"
-                name="PassWord"
+                name="password"
                 type="password"
                 placeholder="비밀번호"
-                errors={[]}
                 required
+                errors={state?.fieldErrors.password}
               />
               <Input
                 label="비밀번호 확인"
-                name="PassWord Check"
+                name="password_check"
                 type="password"
                 placeholder="비밀번호 확인"
-                errors={[]}
                 required
+                errors={state?.fieldErrors.password_check}
               />
             </div>
 
