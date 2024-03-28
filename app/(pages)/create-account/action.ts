@@ -1,17 +1,16 @@
 "use server";
+import {
+  PASSWORD_MIN_LENGTH,
+  PASSWORD_MIN_LENGTH_ERROR,
+  PASSWORD_REGEX,
+  PASSWORD_REGEX_ERROR,
+} from "@/app/_libs/_server/constants";
 import { z } from "zod";
-
-const passwordRegex = new RegExp(
-  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).+$/
-);
-//강력한 비밀번호를 위해서 소문자,대문자,숫자,특수문자를 포함해야되는 변수추가
 
 const formSchema = z
   .object({
     username: z
       .string()
-      .min(5, "5글자 이상 입력해 주세요")
-      .max(15, "15글자 이하로 입력해 주세요")
       .toLowerCase() //대문자를 소문자로 자동변환
       .trim() //공백제거
       .refine(
@@ -23,13 +22,12 @@ const formSchema = z
 
     password: z
       .string()
-      .min(10, "10글자이상 입력해 주세요.")
-      .regex(
-        passwordRegex,
-        "비밀번호는 소문자,대문자,숫자,특수문자를 포함해야 합니다."
-      ),
+      .min(PASSWORD_MIN_LENGTH, PASSWORD_MIN_LENGTH_ERROR)
+      .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
 
-    password_check: z.string().min(10, "10글자이상 입력해 주세요."),
+    password_check: z
+      .string()
+      .min(PASSWORD_MIN_LENGTH, PASSWORD_MIN_LENGTH_ERROR),
   })
   .refine(({ password, password_check }) => password === password_check, {
     message: "비밀번호가 다릅니다.",

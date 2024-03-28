@@ -4,11 +4,13 @@ import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import Layout from "@/app/_components/layout";
 import React from "react";
-import { handleForm } from "./action";
+import { login } from "./action";
 import { useFormState } from "react-dom";
+import { PASSWORD_MIN_LENGTH } from "@/app/_libs/_server/constants";
+import Link from "next/link";
 
 export default function Enter() {
-  const [state, action] = useFormState(handleForm, null);
+  const [state, action] = useFormState(login, null);
   /* from action을 실행하면 action.ts의  handleForm이 실행되고 
   return 값을 state로 받아옴 
   useFormState는 상호작용을 하므로 use client를 상단에 써야됨
@@ -89,7 +91,7 @@ export default function Enter() {
                 label=""
                 type="email"
                 placeholder="이메일 주소"
-                errors={state?.error} //useFormState의 state를 받아오고 handleForm의 return값이 출력됨
+                errors={state?.fieldErrors.email} //useFormState의 state를 받아오고 handleForm의 return값이 출력됨
                 required
               />
               <Input
@@ -97,7 +99,7 @@ export default function Enter() {
                 label=""
                 type="password"
                 placeholder="비밀번호"
-                errors={state?.error}
+                errors={state?.fieldErrors.password}
                 required
               />
             </div>
@@ -133,7 +135,10 @@ export default function Enter() {
                 카카오톡
               </button>
 
-              <button className="flex gap-2 justify-center items-center py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <Link
+                href="/sms"
+                className="flex gap-2 justify-center items-center py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -149,7 +154,7 @@ export default function Enter() {
                   />
                 </svg>
                 휴대폰
-              </button>
+              </Link>
             </div>
           </div>
         </div>
