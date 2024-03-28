@@ -1,9 +1,22 @@
+"use client";
+//useFormState를 사용하기 때문에 적어야됨
+//useState,useEffect 등 마찬가지
+
 import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import Layout from "@/app/_components/layout";
 import Link from "next/link";
+import { useFormState } from "react-dom";
+import { smsLogin } from "./action";
+
+const initialState = {
+  token: false,
+  error: undefined,
+};
 
 export default function CreateAccount() {
+  const [state, action] = useFormState(smsLogin, initialState);
+
   return (
     <Layout canGoBack>
       <div className="px-4 py-4">
@@ -15,25 +28,32 @@ export default function CreateAccount() {
             </h2>
           </div>
 
-          <form>
+          <form action={action}>
             <div className="flex flex-col">
-              <Input
-                label=""
-                name="phone"
-                type="number"
-                placeholder="휴대폰 번호"
-                required
-              />
-              <Input
-                label=""
-                name="phone code"
-                type="number"
-                placeholder="인증번호"
-                required
-              />
+              {state?.token ? (
+                <Input
+                  label=""
+                  name="token"
+                  type="number"
+                  placeholder="인증번호"
+                  required
+                  min={100000}
+                  max={999999}
+                />
+              ) : (
+                <Input
+                  label=""
+                  name="phone"
+                  type="text"
+                  kind="phone"
+                  placeholder="휴대폰 번호"
+                  required
+                  errors={state.error?.formErrors}
+                />
+              )}
             </div>
 
-            <Button text="인증코드 보내기" />
+            <Button text={state.token ? "인증번호 확인" : "인증번호 보내기"} />
           </form>
         </div>
 
