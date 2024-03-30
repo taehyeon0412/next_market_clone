@@ -13,6 +13,7 @@ const initialState = {
   token: false,
   error: undefined,
 };
+//action.ts의 초기값(prevState)로 들어가는 값
 
 export default function CreateAccount() {
   const [state, action] = useFormState(smsLogin, initialState);
