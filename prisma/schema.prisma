@@ -28,3 +28,5 @@ model SMSToken {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     Int
 }
+
+//Cascade = 기존 사용자가 탈퇴할때 연관된 모든 것이 없어지게 함 

@@ -4,7 +4,10 @@ import {
   PASSWORD_MIN_LENGTH_ERROR,
   PASSWORD_REGEX,
   PASSWORD_REGEX_ERROR,
+  checkUniqueEmail,
+  checkUniqueUsername,
 } from "@/app/_libs/_server/constants";
+import db from "@/app/_libs/_server/db";
 import { z } from "zod";
 
 const formSchema = z
@@ -16,9 +19,14 @@ const formSchema = z
       .refine(
         (username) => !username.includes("tomato"),
         "tomato는 입력할 수 없습니다."
-      ),
+      )
+      .refine(checkUniqueUsername, "이미 가입된 닉네임입니다."),
 
-    email: z.string().email("잘못된 이메일 형식입니다.").toLowerCase(),
+    email: z
+      .string()
+      .email("잘못된 이메일 형식입니다.")
+      .toLowerCase()
+      .refine(checkUniqueEmail, "이미 가입된 이메일입니다."),
 
     password: z
       .string()
@@ -47,13 +55,14 @@ export async function createAccount(prevState: any, formData: FormData) {
   };
   //form데이터의 name에서 각각의 데이터를 불러옴
 
-  const result = formSchema.safeParse(data);
+  const result = await formSchema.safeParseAsync(data);
   //safeParse는 에러가 없으면 success가 뜬다
+  //db와 통신을 해야 되므로 async await를 반드시 써야된다.
 
   if (!result.success) {
-    return result.error.flatten();
+    return result.error.flatten(); //유효성 검사 실패했을 경우
   } else {
-    console.log(result.data);
+    //zod에서 유효성 검사가 완료되면 로그인 후 /home으로 이동
   }
   //return값이 useFormState의state값으로 들어감
 }
