@@ -10,6 +10,8 @@ export const PASSWORD_MIN_LENGTH_ERROR = "10글자이상 입력해 주세요.";
 export const PASSWORD_REGEX_ERROR =
   "비밀번호는 소문자,대문자,숫자,특수문자를 포함해야 합니다.";
 
+//-------------------------------------- 가입 로직
+
 //유저 닉네임 중복 유효성 검사 로직
 export const checkUniqueUsername = async (username: string) => {
   const user = await db.user.findUnique({
@@ -37,4 +39,19 @@ export const checkUniqueEmail = async (email: string) => {
     },
   });
   return Boolean(user) === false;
+};
+
+//기존 사용자 로그인 로직
+
+//유저 이메일 유효성 검사
+export const checkEmailExists = async (email: string) => {
+  const user = await db.user.findUnique({
+    where: {
+      email,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return Boolean(user);
 };
