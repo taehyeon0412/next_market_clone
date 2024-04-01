@@ -10,12 +10,11 @@ import { z } from "zod";
 
 const formSchema = z.object({
   email: z.string().email().toLowerCase(),
-  password: z
-    .string({
-      required_error: "비밀번호를 입력해주세요.",
-    })
-    .min(PASSWORD_MIN_LENGTH, PASSWORD_MIN_LENGTH_ERROR)
-    .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
+  password: z.string({
+    required_error: "비밀번호를 입력해주세요.",
+  }),
+  /*  .min(PASSWORD_MIN_LENGTH, PASSWORD_MIN_LENGTH_ERROR)
+    .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR), */
 });
 
 export const login = async (prevState: any, formData: FormData) => {
