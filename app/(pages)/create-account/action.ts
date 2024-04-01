@@ -9,7 +9,10 @@ import {
 } from "@/app/_libs/_server/constants";
 import db from "@/app/_libs/_server/db";
 import bcrypt from "bcrypt";
+import { getIronSession } from "iron-session";
 import { z } from "zod";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const formSchema = z
   .object({
@@ -75,7 +78,16 @@ export async function createAccount(prevState: any, formData: FormData) {
         id: true,
       },
     });
-    console.log(user);
+
+    const cookie = await getIronSession(cookies(), {
+      cookieName: "delicious-carrot",
+      password: process.env.COOKIE_PASSWORD!,
+    });
+    //@ts-ignore
+    cookie.id = user.id;
+    await cookie.save();
+
+    redirect("/home");
   }
   //return값이 useFormState의state값으로 들어감
 }
