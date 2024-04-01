@@ -22,14 +22,9 @@ const formSchema = z
       .refine(
         (username) => !username.includes("tomato"),
         "tomato는 입력할 수 없습니다."
-      )
-      .refine(checkUniqueUsername, "이미 가입된 닉네임입니다."),
+      ),
 
-    email: z
-      .string()
-      .email("잘못된 이메일 형식입니다.")
-      .toLowerCase()
-      .refine(checkUniqueEmail, "이미 가입된 이메일입니다."),
+    email: z.string().email("잘못된 이메일 형식입니다.").toLowerCase(),
 
     password: z
       .string()
@@ -40,6 +35,9 @@ const formSchema = z
       .string()
       .min(PASSWORD_MIN_LENGTH, PASSWORD_MIN_LENGTH_ERROR),
   })
+  .superRefine(checkUniqueUsername)
+  .superRefine(checkUniqueEmail)
+  //superRefine 다음에 있는 오류들은 앞에 오류가 해결되기 전에는 나타나지 않음(데이터가 많을때는 한꺼번에 불러오기 힘들기 때문에 이것을 사용함)
   .refine(({ password, password_check }) => password === password_check, {
     message: "비밀번호가 다릅니다.",
     path: ["password_check"],
@@ -83,7 +81,7 @@ export async function createAccount(prevState: any, formData: FormData) {
     session.id = user.id;
     await session.save();
 
-    redirect("/home");
+    redirect("/");
   }
   //return값이 useFormState의state값으로 들어감
 }

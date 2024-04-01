@@ -1,3 +1,4 @@
+import { z } from "zod";
 import db from "./db";
 
 export const PASSWORD_MIN_LENGTH = 10;
@@ -13,7 +14,7 @@ export const PASSWORD_REGEX_ERROR =
 //-------------------------------------- 가입 로직
 
 //유저 닉네임 중복 유효성 검사 로직
-export const checkUniqueUsername = async (username: string) => {
+export const checkUniqueUsername = async ({ username }: any, ctx: any) => {
   const user = await db.user.findUnique({
     where: {
       username,
@@ -22,14 +23,22 @@ export const checkUniqueUsername = async (username: string) => {
       id: true,
     },
   });
-  return Boolean(user) === false;
+  if (user) {
+    ctx.addIssue({
+      code: "custom",
+      message: "사용 중인 닉네임입니다.",
+      path: ["username"],
+      fatal: true,
+    });
+    return z.NEVER;
+  }
 };
 
-/* Boolean(user) === false 가 맞다면 true를 반환함
-(일치하는 닉네임이 없어야 회원가입이 되니까)*/
+/* superRefine이 NEVER를 리턴하고 거기에 fatal issue가 있을때 
+다른 refine들은 실행되지 않는다 (오류가 생긴곳 다음 오류는 실행되지않음) */
 
 //유저 이메일 중복 유효성 검사 로직
-export const checkUniqueEmail = async (email: string) => {
+export const checkUniqueEmail = async ({ email }: any, ctx: any) => {
   const user = await db.user.findUnique({
     where: {
       email,
@@ -38,7 +47,15 @@ export const checkUniqueEmail = async (email: string) => {
       id: true,
     },
   });
-  return Boolean(user) === false;
+  if (user) {
+    ctx.addIssue({
+      code: "custom",
+      message: "이미 가입된 이메일입니다.",
+      path: ["email"],
+      fatal: true,
+    });
+    return z.NEVER;
+  }
 };
 
 //기존 사용자 로그인 로직
