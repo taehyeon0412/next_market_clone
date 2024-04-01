@@ -8,6 +8,7 @@ import {
   checkUniqueUsername,
 } from "@/app/_libs/_server/constants";
 import db from "@/app/_libs/_server/db";
+import bcrypt from "bcrypt";
 import { z } from "zod";
 
 const formSchema = z
@@ -62,7 +63,19 @@ export async function createAccount(prevState: any, formData: FormData) {
   if (!result.success) {
     return result.error.flatten(); //유효성 검사 실패했을 경우
   } else {
-    //zod에서 유효성 검사가 완료되면 로그인 후 /home으로 이동
+    const hashedPassword = await bcrypt.hash(result.data.password, 12); //비밀번호 해싱
+
+    const user = await db.user.create({
+      data: {
+        username: result.data.username,
+        email: result.data.email,
+        password: hashedPassword,
+      },
+      select: {
+        id: true,
+      },
+    });
+    console.log(user);
   }
   //return값이 useFormState의state값으로 들어감
 }
