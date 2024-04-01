@@ -81,7 +81,7 @@ export async function createAccount(prevState: any, formData: FormData) {
     session.id = user.id;
     await session.save();
 
-    redirect("/");
+    redirect("/home");
   }
   //return값이 useFormState의state값으로 들어감
 }

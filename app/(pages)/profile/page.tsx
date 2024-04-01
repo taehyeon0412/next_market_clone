@@ -1,20 +1,59 @@
 import Layout from "@/app/_components/layout";
-import type { NextPage } from "next";
+import db from "@/app/_libs/_server/db";
+import getSession from "@/app/_libs/_server/session";
 import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 
-const Profile: NextPage = () => {
+async function getUser() {
+  const session = await getSession();
+  if (session.id) {
+    const user = await db.user.findUnique({
+      where: {
+        id: session.id,
+      },
+    });
+    if (user) {
+      return user;
+    }
+  }
+  notFound(); //세션아이디(쿠키)가 없으면 notFound가 나타남
+}
+
+export default async function Profile() {
+  const user = await getUser();
+  const logout = async () => {
+    "use server";
+    const session = await getSession();
+    await session.destroy();
+    redirect("/");
+  };
+  //로그아웃 로직
+
   return (
-    <Layout hasTabBar title="나의 캐럿">
+    <Layout hasTabBar title="마이페이지">
       <div className="py-10 px-4">
-        <div className="flex items-center space-x-3">
-          <div className="w-16 h-16 bg-slate-500 rounded-full" />
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-3">
+            <div className="w-16 h-16 bg-slate-500 rounded-full" />
 
-          <div className="flex flex-col">
-            <span className="font-medium text-gray-900">Steve Jebs</span>
-            <Link href={`profile/edit`}>
-              <span className="text-sm text-gray-700">Edit profile &rarr;</span>
-            </Link>
+            <div className="flex flex-col">
+              <span className="font-medium text-gray-900">
+                {user?.username}
+              </span>
+              <Link href={`profile/edit`}>
+                <span className="text-sm text-gray-700">
+                  프로필 수정 &rarr;
+                </span>
+              </Link>
+            </div>
           </div>
+
+          <form
+            action={logout}
+            className="cursor-pointer flex items-center px-2.5 py-0.5 rounded-md text-xs bg-gray-200 text-gray-500 font-semibold"
+          >
+            <button>로그아웃</button>
+          </form>
         </div>
 
         <div className="mt-10 flex justify-around ">
@@ -168,6 +207,4 @@ const Profile: NextPage = () => {
       </div>
     </Layout>
   );
-};
-
-export default Profile;
+}
