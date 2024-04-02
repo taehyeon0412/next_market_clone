@@ -10,6 +10,10 @@ const publicOnlyUrls: Routes = {
   "/enter": true,
   "/sms": true,
   "/create-account": true,
+  "/github/start": true,
+  "/github/complete": true,
+  "/kakao/start": true,
+  "/kakao/complete": true,
 };
 //퍼블릭으로 접근 가능한 URL 목록
 
