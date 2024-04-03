@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 export function GET() {
   const baseURL = "https://github.com/login/oauth/authorize";
   const params = {
@@ -12,5 +14,5 @@ export function GET() {
   const finalUrl = `${baseURL}?${formattedParams}`;
   //baseURL+formattedParams를 합쳐준다
 
-  return Response.redirect(finalUrl);
+  return redirect(finalUrl);
 }

@@ -14,6 +14,7 @@ model User {
   email      String?    @unique
   password   String?
   kakao_id   String?    @unique
+  github_id  String?    @unique
   avatar     String?
   created_at DateTime   @default(now()) //새유저가 만들어질때 그 시점의 날짜
   updated_at DateTime   @updatedAt //수정될 때 마다 수정된 시간을 넣음
