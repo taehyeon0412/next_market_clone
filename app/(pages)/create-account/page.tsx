@@ -83,7 +83,7 @@ export default function CreateAccount() {
           </span>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 mt-2">
+        <div className="grid grid-cols-2 gap-3 mt-2">
           <Link
             href="/kakao/start"
             className="flex gap-2 justify-center items-center py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
@@ -143,7 +143,7 @@ export default function CreateAccount() {
             깃허브
           </Link>
 
-          <Link
+          {/* <Link
             href="/sms"
             className="flex gap-2 justify-center items-center py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
           >
@@ -162,7 +162,7 @@ export default function CreateAccount() {
               />
             </svg>
             휴대폰
-          </Link>
+          </Link> */}
         </div>
       </div>
     </Layout>

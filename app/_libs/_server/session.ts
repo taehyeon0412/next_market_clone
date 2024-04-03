@@ -9,7 +9,7 @@ interface SessionContent {
 
 export default function getSession() {
   return getIronSession<SessionContent>(cookies(), {
-    cookieName: "delicious-carrot",
+    cookieName: "carrot_clone_login",
     password: process.env.COOKIE_PASSWORD!, //느낌표(!)는env에 비밀번호가 반드시 있다는뜻
   });
 }
