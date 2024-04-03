@@ -6,6 +6,7 @@ import { z } from "zod";
 import { redirect } from "next/navigation";
 import db from "@/app/_libs/_server/db";
 import getSession from "@/app/_libs/_server/session";
+import twilio from "twilio";
 
 const phoneSchema = z
   .string()
@@ -103,6 +104,17 @@ export async function smsLogin(prevState: ActionState, formData: FormData) {
         },
       });
       //토큰을 새로 만듦
+
+      const client = twilio(
+        process.env.TWILIO_ACCOUNT_SID,
+        process.env.TWILIO_AUTH_TOKEN
+      );
+      await client.messages.create({
+        body: `당근 마켓 인증번호: ${token}`,
+        from: process.env.TWILIO_PHONE_NUMBER!,
+        to: process.env.TWILIO_MY_NUMBER!,
+      });
+      //twilio를 사용하여 sms를 보내는 기능
 
       return {
         token: true,
