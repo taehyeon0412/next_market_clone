@@ -7,7 +7,9 @@ export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
 
   if (!code) {
-    return notFound();
+    return new Response(null, {
+      status: 400,
+    });
   }
   //코드없이 URL에 강제로 접속할 경우
 
