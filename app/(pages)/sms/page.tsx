@@ -40,6 +40,7 @@ export default function CreateAccount() {
                   required
                   min={100000}
                   max={999999}
+                  errors={state.error?.formErrors}
                 />
               ) : (
                 <Input

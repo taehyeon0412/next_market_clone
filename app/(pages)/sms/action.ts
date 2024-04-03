@@ -5,6 +5,7 @@ import validator from "validator";
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import db from "@/app/_libs/_server/db";
+import getSession from "@/app/_libs/_server/session";
 
 const phoneSchema = z
   .string()
@@ -15,7 +16,24 @@ const phoneSchema = z
   );
 //전화번호
 
-const tokenSchema = z.coerce.number().min(100000).max(999999);
+async function tokenExists(token: number) {
+  const exists = await db.sMSToken.findUnique({
+    where: {
+      token: token.toString(),
+    },
+    select: {
+      id: true,
+    },
+  });
+  return Boolean(exists);
+}
+//토큰 유효성 검사
+
+const tokenSchema = z.coerce
+  .number()
+  .min(100000)
+  .max(999999)
+  .refine(tokenExists, "잘못된 인증번호입니다.");
 //인증코드
 //coerce는 유저가 입력한 string을 강제로 다른것으로 변환함
 
@@ -91,14 +109,39 @@ export async function smsLogin(prevState: ActionState, formData: FormData) {
       };
     }
   } else {
-    const result = tokenSchema.safeParse(token);
+    const result = await tokenSchema.safeParseAsync(token); //토큰이 올바른지 검증
 
     if (!result.success) {
+      //토큰 불일치
       return {
         token: true,
         error: result.error.flatten(),
       };
     } else {
+      //토큰 일치
+      const token = await db.sMSToken.findUnique({
+        where: {
+          token: result.data.toString(),
+        },
+        select: {
+          id: true,
+          userId: true,
+        },
+      });
+
+      //유저 로그인
+      if (token) {
+        const session = await getSession();
+        session.id = token.userId; //session.id에 token.userId를 넣음
+        await session.save();
+        await db.sMSToken.delete({
+          where: {
+            id: token.id,
+          },
+        });
+        //마지막으로 sms 인증 토큰을 삭제함
+      }
+
       redirect("/home");
     }
   }
@@ -144,5 +187,9 @@ if (!prevState.token) {
 1.올바른 번호가 입력되면 기존에 있던 로그인 토큰을 삭제해야됨
 
 2.새로운 토큰을 만들어서 SMS를 통해 twilio->user에게 보내야됨
+
+3. 토큰이 누구에게 연결되어 있는지 userId와 토큰을 연결시켜줘야됨
+
+4. 로그인 -> 페이지 이동
 
 */
