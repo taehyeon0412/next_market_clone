@@ -19,6 +19,7 @@ model User {
   created_at DateTime   @default(now()) //새유저가 만들어질때 그 시점의 날짜
   updated_at DateTime   @updatedAt //수정될 때 마다 수정된 시간을 넣음
   SMSToken   SMSToken[]
+  Items      Item[]
 }
 
 model SMSToken {
@@ -31,3 +32,16 @@ model SMSToken {
 }
 
 //Cascade = 기존 사용자가 탈퇴할때 연관된 모든 것이 없어지게 함 
+
+model Item {
+  id          Int    @id @default(autoincrement())
+  title       String
+  price       Int
+  photo       String
+  description String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+}
