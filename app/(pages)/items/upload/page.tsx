@@ -28,7 +28,7 @@ export default function Upload() {
 
   return (
     <Layout canGoBack>
-      <div className="px-4 pt-4 mb-5 h-full">
+      <div className="relative px-4 pt-4 mb-5 h-full">
         <div>
           <label
             className="w-full text-gray-600 hover:cursor-pointer hover:border-orange-500 hover:text-orange-500 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 h-60 sm:h-96  rounded-md bg-contain bg-center bg-no-repeat"
@@ -75,11 +75,13 @@ export default function Upload() {
           kind="price"
         />
 
-        <div className="mt-5 mb-1 block text-sm font-medium">
+        <div className="mt-5 pb-20 block text-sm font-medium">
           <TextArea name="description" label="자세한 설명" />
         </div>
 
-        <Button text="작성 완료" />
+        <div className="fixed py-2 px-4 bottom-0 mx-auto left-0 right-0 max-w-lg z-50 bg-white border border-white">
+          <Button text="작성 완료" />
+        </div>
       </div>
     </Layout>
   );

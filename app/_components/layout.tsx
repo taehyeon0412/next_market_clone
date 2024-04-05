@@ -36,7 +36,7 @@ export default function Layout({
       <div
         className={cls(
           !canGoBack ? "justify-center" : "",
-          "bg-white w-full max-w-lg mx-auto px-5 text-lg font-medium py-3 fixed text-gray-800 border-b top-0 flex items-center"
+          "z-50 bg-white w-full max-w-lg mx-auto px-5 text-lg font-medium py-3 fixed text-gray-800 border-b top-0 flex items-center"
         )}
       >
         {canGoBack ? (
@@ -63,7 +63,7 @@ export default function Layout({
       <div className={cls("pt-16", hasTabBar ? "pb-16" : "")}>{children}</div>
 
       {hasTabBar ? (
-        <nav className="bg-white max-w-lg text-gray-700 border-t fixed bottom-0 w-full px-10 pb-3 pt-3 flex justify-between text-xs">
+        <nav className="grid grid-cols-5 bg-white max-w-lg text-gray-700 border-t fixed bottom-0 w-full px-4 pb-3 pt-3 text-xs">
           <Link href="/home">
             <div
               className={cls(
@@ -118,6 +118,34 @@ export default function Layout({
             </div>
           </Link>
 
+          <Link href="/items/upload">
+            <div
+              className={cls(
+                "flex flex-col items-center space-y-2 ",
+                pathname === "/streams"
+                  ? "text-orange-500"
+                  : "hover:text-gray-500 transition-colors"
+              )}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+
+              <span>등록</span>
+            </div>
+          </Link>
+
           <Link href="/chats">
             <div
               className={cls(
@@ -142,33 +170,6 @@ export default function Layout({
                 ></path>
               </svg>
               <span>채팅</span>
-            </div>
-          </Link>
-
-          <Link href="/streams">
-            <div
-              className={cls(
-                "flex flex-col items-center space-y-2 ",
-                pathname === "/streams"
-                  ? "text-orange-500"
-                  : "hover:text-gray-500 transition-colors"
-              )}
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                ></path>
-              </svg>
-              <span>라이브</span>
             </div>
           </Link>
 
