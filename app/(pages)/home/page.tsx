@@ -1,10 +1,20 @@
 import type { NextPage } from "next";
 import Layout from "../../_components/layout";
 import FloatingButton from "../../_components/floating-button";
-import Item from "../../_components/item";
+import db from "@/app/_libs/_server/db";
+import ListItem from "@/app/_components/list-item";
 
 async function getItems() {
-  await new Promise((resolve) => setTimeout(resolve, 10000));
+  const items = await db.item.findMany({
+    select: {
+      title: true,
+      price: true,
+      created_at: true,
+      photo: true,
+      id: true,
+    },
+  });
+  return items;
 }
 
 export default async function Home() {
@@ -13,6 +23,10 @@ export default async function Home() {
   return (
     <Layout title="홈" hasTabBar>
       <div className="flex flex-col space-y-5">
+        {items.map((item) => (
+          <ListItem key={item.id} {...item} />
+        ))}
+
         <FloatingButton href="/items/upload">
           <svg
             className="h-6 w-6"

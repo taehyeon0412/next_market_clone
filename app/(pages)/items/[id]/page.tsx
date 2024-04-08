@@ -2,7 +2,7 @@ import Button from "@/app/_components/button";
 import Layout from "@/app/_components/layout";
 import type { NextPage } from "next";
 
-const ItemDetail: NextPage = () => {
+export default function ItemDetail() {
   return (
     <Layout canGoBack>
       <div className="px-4 py-10">
@@ -78,6 +78,4 @@ const ItemDetail: NextPage = () => {
       </div>
     </Layout>
   );
-};
-
-export default ItemDetail;
+}
