@@ -3,21 +3,16 @@ import Layout from "../../_components/layout";
 import FloatingButton from "../../_components/floating-button";
 import Item from "../../_components/item";
 
-const Home: NextPage = () => {
+async function getItems() {
+  await new Promise((resolve) => setTimeout(resolve, 10000));
+}
+
+export default async function Home() {
+  const items = await getItems();
+
   return (
     <Layout title="홈" hasTabBar>
       <div className="flex flex-col space-y-5">
-        {[...Array(10)].map((_, i) => (
-          <Item
-            id={i}
-            key={i}
-            title="iPhone"
-            price={99}
-            comments={1}
-            hearts={1}
-          />
-        ))}
-
         <FloatingButton href="/items/upload">
           <svg
             className="h-6 w-6"
@@ -38,6 +33,4 @@ const Home: NextPage = () => {
       </div>
     </Layout>
   );
-};
-
-export default Home;
+}
