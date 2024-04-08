@@ -7,6 +7,7 @@ import TextArea from "@/app/_components/textarea";
 import { useRef, useState } from "react";
 import { uploadItem } from "./action";
 import { MB } from "@/app/_libs/_client/utils";
+import { useFormState } from "react-dom";
 
 export default function Upload() {
   const [preview, setPreview] = useState("");
@@ -57,9 +58,11 @@ export default function Upload() {
   };
   //이미지 미리보기 삭제 로직
 
+  const [state, action] = useFormState(uploadItem, null);
+
   return (
     <Layout canGoBack>
-      <form action={uploadItem} className="relative px-4 pt-4 mb-5 h-full">
+      <form action={action} className="relative px-4 pt-4 mb-5 h-full">
         <div>
           <label
             className="w-full text-gray-600 hover:cursor-pointer hover:border-orange-500 hover:text-orange-500 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 h-60 sm:h-96  rounded-md bg-contain bg-center bg-no-repeat"
@@ -82,6 +85,7 @@ export default function Upload() {
                   />
                 </svg>
                 <span>사진을 추가해주세요.</span>
+                {state?.fieldErrors.photo}
               </>
             ) : null}
 
@@ -124,6 +128,7 @@ export default function Upload() {
           name="title"
           type="text"
           placeholder="제목"
+          errors={state?.fieldErrors.title}
         />
         <Input
           required
@@ -132,13 +137,16 @@ export default function Upload() {
           placeholder="가격을 입력해주세요."
           type="number"
           kind="price"
+          errors={state?.fieldErrors.price}
         />
 
         <div className="mt-5 pb-20 block text-sm font-medium">
           <TextArea
+            required
             name="description"
             label="자세한 설명"
             labelName="textArea"
+            errors={state?.fieldErrors.description}
           />
         </div>
 
