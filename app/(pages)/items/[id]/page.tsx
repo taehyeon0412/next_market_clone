@@ -1,11 +1,12 @@
-import Button from "@/app/_components/button";
 import Layout from "@/app/_components/layout";
 import { formatToWon } from "@/app/_libs/_client/utils";
 import db from "@/app/_libs/_server/db";
 import getSession from "@/app/_libs/_server/session";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import DeleteItem from "./delete-item";
+import ItemDeleteButton from "./delete-button";
 
 async function getIsOwner(userId: number) {
   const session = await getSession();
@@ -55,6 +56,11 @@ export default async function ItemDetail({
   //item의 id가 없다면 notFound
 
   const isOwner = await getIsOwner(item.userId);
+
+  async function deleteItem() {
+    await DeleteItem(item!.id);
+    redirect("/home");
+  }
 
   return (
     <Layout canGoBack>
@@ -130,11 +136,7 @@ export default async function ItemDetail({
               </div>
 
               <div className="flex gap-4">
-                {isOwner ? (
-                  <button className="bg-red-500 px-4 py-2 rounded-md text-white font-semibold text-sm">
-                    삭제
-                  </button>
-                ) : null}
+                {isOwner ? <ItemDeleteButton itemId={item.id} /> : null}
 
                 <Link
                   className="bg-orange-500 px-3 py-2 rounded-md text-white font-semibold text-sm"

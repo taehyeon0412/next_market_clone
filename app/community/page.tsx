@@ -9,7 +9,7 @@ const Community: NextPage = () => {
       <div className="space-y-8">
         {[1, 2, 3, 4, 5, 6].map((_, i) => (
           <Link
-            href={`/items/community/${i}`}
+            href={`/community/${i}`}
             key={i}
             className="px-4 flex flex-col items-start cursor-pointer"
           >

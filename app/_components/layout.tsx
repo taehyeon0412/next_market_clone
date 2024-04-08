@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { cls } from "../_libs/_client/utils";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, redirect } from "next/navigation";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -23,11 +23,14 @@ export default function Layout({
   const onClick = () => {
     if (pathname === "/create-account" || pathname === "/enter") {
       router.push("/");
+    } else if (/^\/items\/.+/.test(pathname)) {
+      router.push("/home");
+      //items/[id]일때 뒤로가기 누르면 upload로 이동되는 경우가 있어서 home으로 가게 만듦
     } else {
       router.back();
     }
   };
-  //뒤로가기
+  //top바 뒤로가기
 
   console.log(pathname);
 
@@ -91,11 +94,11 @@ export default function Layout({
             </div>
           </Link>
 
-          <Link href="/items/community">
+          <Link href="/community">
             <div
               className={cls(
                 "flex flex-col items-center space-y-2 ",
-                pathname === "/items/community"
+                pathname === "/community"
                   ? "text-orange-500"
                   : "hover:text-gray-500 transition-colors"
               )}
