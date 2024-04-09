@@ -95,6 +95,7 @@ export default function Upload() {
               className="hidden z-30"
               type="file"
               accept="image/*"
+              required
             />
             {/* label로 input을 감싸고 hidden으로 input을 감춰주면 이쁜 input이 된다 */}
           </label>

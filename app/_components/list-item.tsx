@@ -1,3 +1,5 @@
+//홈화면 아이템 리스트 나오는것
+
 import Image from "next/image";
 import Link from "next/link";
 import { formatToTimeAgo, formatToWon } from "../_libs/_client/utils";
@@ -24,7 +26,7 @@ export default function ListItem({
     >
       <div className="flex space-x-4 items-center">
         <div className="relative size-28 rounded-md overflow-hidden">
-          <Image fill src={photo} alt={title} />
+          <Image fill src={photo} alt={title} className="object-cover" />
         </div>
 
         <div className="flex flex-col gap-1">

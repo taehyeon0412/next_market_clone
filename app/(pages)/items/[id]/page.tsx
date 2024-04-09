@@ -75,16 +75,16 @@ export default async function ItemDetail({
 
           <div className="flex  cursor-pointer py-3 border-t border-b items-center space-x-3">
             <div className="relative size-11 rounded-full bg-slate-300">
-              {/* {item.user.avatar !== null ? (
+              {item.user.avatar !== null ? (
                 <Image
                   fill
                   src={item.user.avatar}
                   alt={item.user.username}
-                  className="rounded-full"
+                  className="rounded-full overflow-hidden"
                 />
               ) : (
                 <div className="w-12 h-12 rounded-full bg-slate-300" />
-              )} */}
+              )}
             </div>
             {/* 프로필이미지 */}
 
