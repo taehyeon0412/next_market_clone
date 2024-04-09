@@ -14,11 +14,20 @@ interface ItemPaginationProps {
 export default function ItemPagination({ initialItems }: ItemPaginationProps) {
   const [items, setItems] = useState(initialItems);
   const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [isLastPage, setIsLastPage] = useState(false);
 
   const onMoreItems = async () => {
     setIsLoading(true);
-    const newItems = await getMoreItems(1); //action.ts 함수 실행
-    setItems((prev) => [...prev, ...newItems]); //이전+새로운 해서 array 생성
+    const newItems = await getMoreItems(page + 1); //action.ts 함수 실행
+
+    if (newItems.length !== 0) {
+      setPage((prev) => prev + 1); //보여줄 상품이 있을 경우에만 page+1을 실행
+      setItems((prev) => [...prev, ...newItems]); //이전+새로운 해서 array 생성
+    } else {
+      setIsLastPage(true);
+    }
+
     setIsLoading(false);
   };
   //button onclick action
@@ -29,13 +38,15 @@ export default function ItemPagination({ initialItems }: ItemPaginationProps) {
         <ListItem key={item.id} {...item} />
       ))}
 
-      <button
-        onClick={onMoreItems}
-        disabled={isLoading}
-        className="text-white text-sm font-semibold bg-orange-500 w-fit mx-auto px-3 py-2 rounded-md hover:opacity-90 active:scale-95"
-      >
-        {isLoading ? "로딩 중" : "더보기"}
-      </button>
+      {isLastPage ? null : (
+        <button
+          onClick={onMoreItems}
+          disabled={isLoading}
+          className="text-white text-sm font-semibold bg-orange-500 w-fit mx-auto px-3 py-2 rounded-md hover:opacity-90 active:scale-95"
+        >
+          {isLoading ? "로딩 중" : "더보기"}
+        </button>
+      )}
     </div>
   );
 }

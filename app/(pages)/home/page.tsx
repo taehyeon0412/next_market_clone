@@ -57,3 +57,14 @@ export default async function Home() {
     </Layout>
   );
 }
+
+/*
+페이지네이션 
+1.db의 첫번째 아이템만 보여주도록 함  /(home)
+2.getInitialItems의 결과를 가져와서 client component로 보냄 /(item-pagination.tsx)
+3.client component에서 useState()를 이용해 initialItems로 초기화 시켜줌 /(item-pagination.tsx)
+4.client component에서 버튼과 로딩 state를 만들어 주고 버튼에 onclick 함수를 만들어줌 /(item-pagination.tsx)
+5.onclick 함수에 들어가는 db로직은 action.ts에 따로 만듦(use server를 해야되기 때문) => 기존의 db에 있는 정보를 가져오되 skip으로 이전에 있던 값은 skip함 /action.ts
+6.onclick을 함수에 이전 items[]과 새로운 items[]를 합쳐 새로운 items[]를 만들게 해줌 /(item-pagination.tsx)
+
+*/
