@@ -66,5 +66,11 @@ export default async function Home() {
 4.client component에서 버튼과 로딩 state를 만들어 주고 버튼에 onclick 함수를 만들어줌 /(item-pagination.tsx)
 5.onclick 함수에 들어가는 db로직은 action.ts에 따로 만듦(use server를 해야되기 때문) => 기존의 db에 있는 정보를 가져오되 skip으로 이전에 있던 값은 skip함 /action.ts
 6.onclick을 함수에 이전 items[]과 새로운 items[]를 합쳐 새로운 items[]를 만들게 해줌 /(item-pagination.tsx)
+*/
 
+/* 무한 스크롤 페이지네이션
+1. button => span으로 교체
+2. useRef()를 만들고 span에 연결해준다
+3. useEffect 내부에 intersectionObserver를 만들고 
+   trigger = useRef()를 observe(관찰)하게 한다
 */
