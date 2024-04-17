@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Carrot Market",
-    default: "carrot Market_clone",
+    template: "Carrot Market",
+    default: "Carrot Market clone",
   },
   description: "Sell and buy all the things!",
 };

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { initialItems } from "../(pages)/home/page";
+import { initialItems } from "../(tabs)/home/page";
 import ListItem from "./list-item";
-import { getMoreItems } from "../(pages)/home/action";
+import { getMoreItems } from "../(tabs)/home/action";
 
 //홈 화면 아이템 리스트 페이지네이션
 

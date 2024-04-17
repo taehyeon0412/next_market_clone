@@ -68,7 +68,7 @@ export default function InitHome() {
       </div>
 
       <div className="w-full">
-        <Link href="/create-account" className="">
+        <Link href="/create-account">
           <Button text="시작하기" />
         </Link>
 

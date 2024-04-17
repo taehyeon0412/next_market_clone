@@ -6,7 +6,11 @@ interface MessageProps {
   avatarUrl?: string;
 }
 
-export default function ({ message, reversed, avatarUrl }: MessageProps) {
+export default function Message({
+  message,
+  reversed,
+  avatarUrl,
+}: MessageProps) {
   return (
     <div
       className={cls(
