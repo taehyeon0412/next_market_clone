@@ -4,6 +4,14 @@ import db from "@/app/_libs/_server/db";
 import ListItem from "@/app/_components/list-item";
 import ItemPagination from "@/app/_components/item-pagination";
 import { Prisma } from "@prisma/client";
+import { unstable_cache as nextCache } from "next/cache";
+
+const getCachedItems = nextCache(getInitialItems, [`home-items`]);
+
+/*nextCache의 인수 
+1.비용이 많이드는 계산이나 db query를 가동시키는 함수
+2.keyParts = 함수가 리턴하는 데이터를 cache안에서 식별할 수 있게 해줌
+  */
 
 async function getInitialItems() {
   const items = await db.item.findMany({
@@ -14,7 +22,7 @@ async function getInitialItems() {
       photo: true,
       id: true,
     },
-    take: 1,
+    take: 8,
     orderBy: {
       created_at: "desc",
     },
@@ -29,7 +37,7 @@ export type initialItems = Prisma.PromiseReturnType<typeof getInitialItems>;
 //수동으로 전부 안바꿔줘도 알아서 자동화 되게 만들 수 있음
 
 export default async function Home() {
-  const initialItems = await getInitialItems();
+  const initialItems = await getCachedItems();
 
   return (
     <Layout title="홈" hasTabBar>

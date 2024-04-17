@@ -11,8 +11,8 @@ export async function getMoreItems(page: number) {
       photo: true,
       id: true,
     },
-    skip: page * 1,
-    take: 1,
+    skip: page * 8,
+    take: 8,
     orderBy: {
       created_at: "desc",
     },

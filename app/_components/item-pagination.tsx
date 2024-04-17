@@ -43,7 +43,7 @@ export default function ItemPagination({ initialItems }: ItemPaginationProps) {
         }
       },
       {
-        threshold: 1.0, //trigger가 몇 퍼센트 표시될 때까지 기다리는 것
+        threshold: 0.5, //trigger가 몇 퍼센트 표시될 때까지 기다리는 것
       }
     );
     if (trigger.current) {
