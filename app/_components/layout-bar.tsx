@@ -68,7 +68,7 @@ export default function Layout({
       </div>
 
       {hasTabBar ? (
-        <nav className="grid grid-cols-5 bg-white max-w-lg text-gray-700 border-t fixed bottom-0 w-full px-4 pb-3 pt-3 text-xs">
+        <nav className="z-50 grid grid-cols-5 bg-white max-w-lg text-gray-700 border-t fixed bottom-0 w-full px-4 pb-3 pt-3 text-xs">
           <Link href="/home">
             <div
               className={cls(

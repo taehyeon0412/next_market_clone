@@ -5,16 +5,15 @@ import ItemPagination from "@/app/_components/item-pagination";
 import { Prisma } from "@prisma/client";
 import { unstable_cache as nextCache } from "next/cache";
 
-const getCachedItems = nextCache(getInitialItems, ["home-items"]);
+/*const getCachedItems = nextCache(getInitialItems, ["home-items"]);
 
-/*nextCache의 인수 
+nextCache의 인수 
 1.비용이 많이드는 계산이나 db query를 가동시키는 함수
 2.keyParts = 함수가 리턴하는 데이터를 cache안에서 식별할 수 있게 해줌
-3.revalidate(갱신) cache에 변경점이 있을 때 변경된 부분을 업데이트 함
   */
 
 async function getInitialItems() {
-  console.log("데이터가 캐시에 들어갔습니다.....");
+  console.log("hit");
 
   const items = await db.item.findMany({
     select: {
@@ -42,7 +41,7 @@ export const dynamic = "force-dynamic";
 //이페이지가 빌드할 때 next.js에게 dynamic-page라고 설명해줌
 
 export default async function Home() {
-  const initialItems = await getCachedItems();
+  const initialItems = await getInitialItems();
 
   return (
     <>

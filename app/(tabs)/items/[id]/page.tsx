@@ -39,9 +39,7 @@ async function getItem(id: number) {
 export default async function ItemDetail({
   params,
 }: {
-  params: {
-    id: string;
-  };
+  params: { id: string };
 }) {
   const id = Number(params.id);
   if (isNaN(id)) {
@@ -56,11 +54,6 @@ export default async function ItemDetail({
   //item의 id가 없다면 notFound
 
   const isOwner = await getIsOwner(item.userId);
-
-  async function deleteItem() {
-    await DeleteItem(item!.id);
-    redirect("/home");
-  }
 
   return (
     <>
@@ -92,9 +85,6 @@ export default async function ItemDetail({
             <div>
               <p className="text-sm font-medium text-gray-700">
                 {item.user.username}
-              </p>
-              <p className="text-xs font-medium text-gray-500">
-                프로필 보기 &rarr;
               </p>
             </div>
             {/* 사용자 프로필 */}
@@ -171,3 +161,29 @@ export default async function ItemDetail({
     </>
   );
 }
+
+export async function generateStaticParams() {
+  const items = await db.item.findMany({
+    select: {
+      id: true,
+    },
+  });
+  //items에 마우스를 올려보면 배열로 나타남
+
+  return items.map((item) => ({
+    id: item.id + "",
+  }));
+  //map은 array를 변환 할 수 있게 해주는 기본함수
+  //array를 가져와서 array의 모든 아이템에 대해 object를 리턴함
+}
+
+/* 
+generateStaticParams()는 무조건 array를 리턴 해야된다.
+ItemDetail에 있는 params: { id: string } 속성에 맞게 
+return [
+  {id:"4"}
+]
+이런식으로 만들어야 됨
+
+
+*/

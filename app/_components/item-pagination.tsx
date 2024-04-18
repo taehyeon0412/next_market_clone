@@ -57,7 +57,7 @@ export default function ItemPagination({ initialItems }: ItemPaginationProps) {
   //무한스크롤 함수
 
   return (
-    <div className="flex flex-col space-y-5">
+    <div className="flex flex-col space-y-5 pb-12">
       {items.map((item) => (
         <ListItem key={item.id} {...item} />
       ))}

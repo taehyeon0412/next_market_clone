@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import deleteItemAction from "./delete-item";
+import DeleteItem from "./delete-item";
 
 type Props = {
   itemId: number;
@@ -10,7 +10,7 @@ type Props = {
 export default function ItemDeleteButton({ itemId }: Props) {
   const router = useRouter();
   async function handleDelete() {
-    const res = await deleteItemAction(itemId);
+    const res = await DeleteItem(itemId);
 
     if (res) {
       alert("삭제되었습니다");
@@ -29,3 +29,5 @@ export default function ItemDeleteButton({ itemId }: Props) {
     </button>
   );
 }
+
+//삭제 누르면 모달창 나오게 하기 예,아니요

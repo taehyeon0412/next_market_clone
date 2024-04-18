@@ -33,7 +33,7 @@ export default async function Profile() {
   return (
     <>
       <Layout hasTabBar title="마이페이지" />
-      <div className="py-10 px-4">
+      <div className="pb-10 px-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3">
             <div className="w-16 h-16 bg-slate-500 rounded-full">
