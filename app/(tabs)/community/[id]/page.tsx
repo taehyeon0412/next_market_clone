@@ -2,6 +2,7 @@ import Layout from "@/app/_components/layout-bar";
 import TextArea from "@/app/_components/textarea";
 import db from "@/app/_libs/_server/db";
 import getSession from "@/app/_libs/_server/session";
+import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -26,7 +27,6 @@ async function getPost(id: number) {
         _count: {
           select: {
             comments: true,
-            likes: true,
           },
         },
       },
@@ -42,9 +42,14 @@ async function getPost(id: number) {
 3. 업데이트할 post를 찾지 못하면 에러를 발생시키므로 try catch 구문으로 써줌
 */
 
-async function getIsLiked(postId: number) {
+const getCachedPost = nextCache(getPost, ["post-detail"], {
+  tags: ["post-detail"],
+  revalidate: 10,
+});
+
+async function getLikeStatus(postId: number) {
   const session = await getSession();
-  const like = await db.like.findUnique({
+  const isLiked = await db.like.findUnique({
     where: {
       id: {
         postId,
@@ -52,9 +57,30 @@ async function getIsLiked(postId: number) {
       },
     },
   });
-  return Boolean(like);
+  //로그인한 유저가 생성한 like를 찾는 함수
+
+  const likeCount = await db.like.count({
+    where: {
+      postId,
+    },
+  });
+  //postId를 가진 post에서 생성된 like 개수를 알려주는 함수
+
+  return {
+    likeCount,
+    isLiked: Boolean(isLiked),
+  };
 }
-//로그인한 유저가 생성한 like를 찾는 함수
+//like 카운팅, 유저가 생성한 like 찾는 함수
+
+function getCachedLikeStatus(postId: number) {
+  const cachedOperation = nextCache(getLikeStatus, ["item-like-status"], {
+    tags: [`like-status-${postId}`],
+  });
+  return cachedOperation(postId);
+}
+//캐시 태그를 하는 이유 :
+//특정 태그의 캐시만 재검증을 하여 서버와의 응답시간을 단축 시킬 수 있음
 
 export default async function CommunityPostDetail({
   params,
@@ -67,7 +93,7 @@ export default async function CommunityPostDetail({
     return notFound();
   }
 
-  const post = await getPost(id);
+  const post = await getCachedPost(id);
 
   if (!post) {
     return notFound();
@@ -85,9 +111,8 @@ export default async function CommunityPostDetail({
           userId: session.id!,
         },
       });
-    } catch (e) {
-      null;
-    }
+      revalidateTag(`like-status-${id}`);
+    } catch (e) {}
   };
 
   const dislikePost = async () => {
@@ -104,13 +129,12 @@ export default async function CommunityPostDetail({
           },
         },
       });
-    } catch (e) {
-      null;
-    }
+      revalidateTag(`like-status-${id}`);
+    } catch (e) {}
   };
   //좋아요 버튼 로직
 
-  const isLiked = await getIsLiked(id);
+  const { likeCount, isLiked } = await getCachedLikeStatus(id);
 
   return (
     <>
@@ -148,7 +172,11 @@ export default async function CommunityPostDetail({
               <form action={isLiked ? dislikePost : likePost}>
                 <button className="flex space-x-2 items-center text-sm cursor-pointer">
                   <svg
-                    className="w-4 h-4"
+                    className={`w-4 h-4 ${
+                      isLiked
+                        ? "bg-orange-500 border-orange-500 text-white rounded-full"
+                        : ""
+                    }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -162,7 +190,9 @@ export default async function CommunityPostDetail({
                     ></path>
                   </svg>
 
-                  <span>궁금해요 {post._count.likes}</span>
+                  <span className={`${isLiked ? "  text-orange-500 " : ""}`}>
+                    궁금해요 {likeCount}
+                  </span>
                 </button>
               </form>
               {/* 좋아요 수 */}
