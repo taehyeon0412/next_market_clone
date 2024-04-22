@@ -1,8 +1,117 @@
 import Layout from "@/app/_components/layout-bar";
 import TextArea from "@/app/_components/textarea";
-import { NextPage } from "next";
+import db from "@/app/_libs/_server/db";
+import getSession from "@/app/_libs/_server/session";
+import Image from "next/image";
+import { notFound } from "next/navigation";
 
-const CommunityPostDetail: NextPage = () => {
+async function getPost(id: number) {
+  try {
+    const post = await db.post.update({
+      where: {
+        id,
+      },
+      data: {
+        views: {
+          increment: 1,
+        },
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+            avatar: true,
+          },
+        },
+        _count: {
+          select: {
+            comments: true,
+            likes: true,
+          },
+        },
+      },
+    });
+    return post;
+  } catch (e) {
+    return null;
+  }
+}
+/*update에 필요한 세가지  
+1. 업데이트할 record가 무엇인지를 나타내는 where
+2. 어떻게 업데이트를 할지 나타내는 data
+3. 업데이트할 post를 찾지 못하면 에러를 발생시키므로 try catch 구문으로 써줌
+*/
+
+async function getIsLiked(postId: number) {
+  const session = await getSession();
+  const like = await db.like.findUnique({
+    where: {
+      id: {
+        postId,
+        userId: session.id!,
+      },
+    },
+  });
+  return Boolean(like);
+}
+//로그인한 유저가 생성한 like를 찾는 함수
+
+export default async function CommunityPostDetail({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const id = Number(params.id);
+
+  if (isNaN(id)) {
+    return notFound();
+  }
+
+  const post = await getPost(id);
+
+  if (!post) {
+    return notFound();
+  }
+
+  const likePost = async () => {
+    "use server";
+
+    const session = await getSession();
+
+    try {
+      await db.like.create({
+        data: {
+          postId: id,
+          userId: session.id!,
+        },
+      });
+    } catch (e) {
+      null;
+    }
+  };
+
+  const dislikePost = async () => {
+    "use server";
+
+    const session = await getSession();
+
+    try {
+      await db.like.delete({
+        where: {
+          id: {
+            postId: id,
+            userId: session.id!,
+          },
+        },
+      });
+    } catch (e) {
+      null;
+    }
+  };
+  //좋아요 버튼 로직
+
+  const isLiked = await getIsLiked(id);
+
   return (
     <>
       <Layout canGoBack />
@@ -12,58 +121,75 @@ const CommunityPostDetail: NextPage = () => {
         </span>
 
         <div className="flex mb-3 px-4 cursor-pointer py-3  border-b items-center space-x-3">
-          <div className="w-10 h-10 rounded-full bg-slate-300" />
+          <div className="w-10 h-10 rounded-full bg-slate-300">
+            <Image
+              src={post.user.avatar!}
+              alt="profileImg"
+              className="rounded-full w-10 h-10 bg-cover"
+              width={64}
+              height={64}
+            />
+          </div>
           <div>
-            <p className="text-sm font-medium text-gray-700">Steve Jobs</p>
-            <p className="text-xs font-medium text-gray-500">
-              View profile &rarr;
+            <p className="text-sm font-medium text-gray-700">
+              {post.user.username}
             </p>
           </div>
         </div>
 
         <div>
-          <div className="mt-2 px-4 text-gray-700">
-            <span className="text-orange-500 font-medium">Q.</span> What is the
-            best mandu restaurant?
+          <div className="mt-2 text-gray-700">
+            <span className="text-orange-500 font-medium">Q.</span>
+            <span className="pl-2 font-medium">{post.title}</span>
           </div>
 
-          <div className="flex space-x-5 mt-3 text-gray-700 py-2.5 border-t border-b-[2px] w-full">
-            <span className="flex space-x-2 items-center text-sm">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
+          <div className="flex justify-between mt-3 text-gray-700 py-2.5 border-t border-b-[2px] w-full">
+            <div className="flex space-x-5 items-center">
+              <form action={isLiked ? dislikePost : likePost}>
+                <button className="flex space-x-2 items-center text-sm cursor-pointer">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
 
-              <span>궁금해요 1</span>
-            </span>
+                  <span>궁금해요 {post._count.likes}</span>
+                </button>
+              </form>
+              {/* 좋아요 수 */}
 
-            <span className="flex space-x-2 items-center text-sm">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                ></path>
-              </svg>
-              <span>답변 1</span>
-            </span>
+              <span className="flex space-x-2 items-center text-sm">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  ></path>
+                </svg>
+                <span>답변 {post._count.comments}</span>
+              </span>
+              {/* 코멘트 수 */}
+            </div>
+
+            <div>
+              <span className="text-sm">조회수 {post.views}</span>
+            </div>
           </div>
         </div>
 
@@ -97,6 +223,4 @@ const CommunityPostDetail: NextPage = () => {
       </div>
     </>
   );
-};
-
-export default CommunityPostDetail;
+}
