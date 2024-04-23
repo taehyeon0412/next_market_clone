@@ -5,6 +5,8 @@ import getSession from "@/app/_libs/_server/session";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import LikeButton from "./../../../_components/like-button";
+import { dislikePost, likePost } from "./action";
 
 async function getPost(id: number) {
   try {
@@ -99,41 +101,6 @@ export default async function CommunityPostDetail({
     return notFound();
   }
 
-  const likePost = async () => {
-    "use server";
-
-    const session = await getSession();
-
-    try {
-      await db.like.create({
-        data: {
-          postId: id,
-          userId: session.id!,
-        },
-      });
-      revalidateTag(`like-status-${id}`);
-    } catch (e) {}
-  };
-
-  const dislikePost = async () => {
-    "use server";
-
-    const session = await getSession();
-
-    try {
-      await db.like.delete({
-        where: {
-          id: {
-            postId: id,
-            userId: session.id!,
-          },
-        },
-      });
-      revalidateTag(`like-status-${id}`);
-    } catch (e) {}
-  };
-  //좋아요 버튼 로직
-
   const { likeCount, isLiked } = await getCachedLikeStatus(id);
 
   return (
@@ -170,30 +137,11 @@ export default async function CommunityPostDetail({
           <div className="flex justify-between mt-3 text-gray-700 py-2.5 border-t border-b-[2px] w-full">
             <div className="flex space-x-5 items-center">
               <form action={isLiked ? dislikePost : likePost}>
-                <button className="flex space-x-2 items-center text-sm cursor-pointer">
-                  <svg
-                    className={`w-4 h-4 ${
-                      isLiked
-                        ? "bg-orange-500 border-orange-500 text-white rounded-full"
-                        : ""
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    ></path>
-                  </svg>
-
-                  <span className={`${isLiked ? "  text-orange-500 " : ""}`}>
-                    궁금해요 {likeCount}
-                  </span>
-                </button>
+                <LikeButton
+                  isLiked={isLiked}
+                  likeCount={likeCount}
+                  postId={id}
+                />
               </form>
               {/* 좋아요 수 */}
 
@@ -243,11 +191,11 @@ export default async function CommunityPostDetail({
           <TextArea
             name="description"
             required
-            placeholder="Answer this question!"
+            placeholder="질문에 답변해 보세요!"
           />
 
           <button className="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 border border-transparent rounded-md shadow-sm text-sm text-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none">
-            Reply
+            댓글 입력 하기
           </button>
         </div>
       </div>
