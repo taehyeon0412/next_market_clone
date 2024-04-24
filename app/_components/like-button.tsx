@@ -1,7 +1,8 @@
 "use client";
 
 import { useOptimistic } from "react";
-import { dislikePost, likePost } from "../(tabs)/community/[id]/action";
+import { dislikePost, likePost } from "../(tabs)/community/[id]/like-action";
+import { startTransition } from "react";
 
 interface LikeButtonProps {
   isLiked: boolean;
@@ -29,9 +30,13 @@ export default function LikeButton({
   //두번째는 데이터를 수정하는 reducer
 
   const onClick = async () => {
-    reducerFn(undefined);
+    startTransition(() => {
+      reducerFn(undefined);
+    });
+    console.log(state.isLiked);
+    console.log(state.likeCount);
 
-    if (isLiked) {
+    if (state.isLiked) {
       await dislikePost(postId);
     } else {
       await likePost(postId);

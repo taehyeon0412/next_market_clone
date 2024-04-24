@@ -37,13 +37,17 @@ export default async function Profile() {
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3">
             <div className="w-16 h-16 bg-slate-500 rounded-full">
-              <Image
-                src={user?.avatar!}
-                alt="profileImg"
-                className="rounded-full w-16 h-16 bg-cover"
-                width={64}
-                height={64}
-              />
+              {user?.avatar ? (
+                <Image
+                  src={user?.avatar}
+                  alt="profile image"
+                  className="rounded-full w-16 h-16 bg-cover"
+                  width={64}
+                  height={64}
+                />
+              ) : (
+                <div className="w-16 h-16 rounded-full bg-slate-300"></div>
+              )}
             </div>
 
             <div className="flex flex-col">

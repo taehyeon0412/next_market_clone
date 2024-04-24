@@ -8,9 +8,9 @@ const Write: NextPage = () => {
     <>
       <Layout canGoBack />
       <form className="px-4 py-10">
-        <TextArea required placeholder="Ask a question!" />
+        <TextArea required placeholder="질문을 입력해 보세요!" />
 
-        <Button text="Submit"></Button>
+        <Button text="질문하기"></Button>
       </form>
     </>
   );

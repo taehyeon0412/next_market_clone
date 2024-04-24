@@ -6,6 +6,7 @@ import getSession from "@/app/_libs/_server/session";
 
 export async function likePost(postId: number) {
   const session = await getSession();
+  console.log("Session ID:", session.id);
 
   try {
     await db.like.create({
@@ -14,6 +15,7 @@ export async function likePost(postId: number) {
         userId: session.id!,
       },
     });
+
     revalidateTag(`like-status-${postId}`);
   } catch (e) {}
 }

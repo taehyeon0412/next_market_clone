@@ -6,7 +6,7 @@ import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import LikeButton from "./../../../_components/like-button";
-import { dislikePost, likePost } from "./action";
+import { CommentBox } from "@/app/_components/comment-box";
 
 async function getPost(id: number) {
   try {
@@ -46,20 +46,25 @@ async function getPost(id: number) {
 
 const getCachedPost = nextCache(getPost, ["post-detail"], {
   tags: ["post-detail"],
-  revalidate: 10,
+  revalidate: 1,
 });
 
 async function getLikeStatus(postId: number) {
   const session = await getSession();
-  const isLiked = await db.like.findUnique({
+  if (!session || !session.id) {
+    console.error("Session or session ID is not valid.");
+    return { likeCount: 0, isLiked: false };
+  }
+
+  const isLikedData = await db.like.findFirst({
     where: {
-      id: {
-        postId,
-        userId: session.id!,
-      },
+      postId,
+      userId: session.id,
     },
   });
   //로그인한 유저가 생성한 like를 찾는 함수
+
+  const isLiked = !!isLikedData && isLikedData.userId === session.id;
 
   const likeCount = await db.like.count({
     where: {
@@ -70,7 +75,7 @@ async function getLikeStatus(postId: number) {
 
   return {
     likeCount,
-    isLiked: Boolean(isLiked),
+    isLiked,
   };
 }
 //like 카운팅, 유저가 생성한 like 찾는 함수
@@ -106,20 +111,24 @@ export default async function CommunityPostDetail({
   return (
     <>
       <Layout canGoBack />
-      <div>
+      <div className="px-4">
         <span className="inline-flex my-2.5 ml-4 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
           동네질문
         </span>
 
         <div className="flex mb-3 px-4 cursor-pointer py-3  border-b items-center space-x-3">
           <div className="w-10 h-10 rounded-full bg-slate-300">
-            <Image
-              src={post.user.avatar!}
-              alt="profileImg"
-              className="rounded-full w-10 h-10 bg-cover"
-              width={64}
-              height={64}
-            />
+            {post.user.avatar ? (
+              <Image
+                src={post.user.avatar}
+                alt="profile image"
+                className="rounded-full w-10 h-10 bg-cover"
+                width={64}
+                height={64}
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-slate-300"></div>
+            )}
           </div>
           <div>
             <p className="text-sm font-medium text-gray-700">
@@ -136,13 +145,8 @@ export default async function CommunityPostDetail({
 
           <div className="flex justify-between mt-3 text-gray-700 py-2.5 border-t border-b-[2px] w-full">
             <div className="flex space-x-5 items-center">
-              <form action={isLiked ? dislikePost : likePost}>
-                <LikeButton
-                  isLiked={isLiked}
-                  likeCount={likeCount}
-                  postId={id}
-                />
-              </form>
+              <LikeButton isLiked={isLiked} likeCount={likeCount} postId={id} />
+
               {/* 좋아요 수 */}
 
               <span className="flex space-x-2 items-center text-sm">
@@ -172,22 +176,10 @@ export default async function CommunityPostDetail({
         </div>
 
         <div className="px-4 my-5 space-y-5">
-          <div className="flex items-start space-x-3">
-            <div className="w-8 h-8 bg-slate-200 rounded-full" />
-
-            <div>
-              <span className="text-sm block font-medium text-gray-700">
-                Steve Jobs
-              </span>
-              <span className="text-xs text-gray-500 block">2시간 전</span>
-              <p className="text-gray-700 mt-2">
-                The best mandu restaurant is the one next to my house.
-              </p>
-            </div>
-          </div>
+          <CommentBox postId={params.id} />
         </div>
 
-        <div className="px-4">
+        <div className="my-5">
           <TextArea
             name="description"
             required
