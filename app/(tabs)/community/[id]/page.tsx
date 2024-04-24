@@ -7,6 +7,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import LikeButton from "./../../../_components/like-button";
 import { CommentBox } from "@/app/_components/comment-box";
+import CommentForm from "@/app/_components/comment-form";
 
 async function getPost(id: number) {
   try {
@@ -46,7 +47,7 @@ async function getPost(id: number) {
 
 const getCachedPost = nextCache(getPost, ["post-detail"], {
   tags: ["post-detail"],
-  revalidate: 1,
+  revalidate: 0.1,
 });
 
 async function getLikeStatus(postId: number) {
@@ -80,12 +81,12 @@ async function getLikeStatus(postId: number) {
 }
 //like 카운팅, 유저가 생성한 like 찾는 함수
 
-function getCachedLikeStatus(postId: number) {
+/* function getCachedLikeStatus(postId: number) {
   const cachedOperation = nextCache(getLikeStatus, ["item-like-status"], {
     tags: [`like-status-${postId}`],
   });
   return cachedOperation(postId);
-}
+} */
 //캐시 태그를 하는 이유 :
 //특정 태그의 캐시만 재검증을 하여 서버와의 응답시간을 단축 시킬 수 있음
 
@@ -106,7 +107,7 @@ export default async function CommunityPostDetail({
     return notFound();
   }
 
-  const { likeCount, isLiked } = await getCachedLikeStatus(id);
+  const { likeCount, isLiked } = await getLikeStatus(id);
 
   return (
     <>
@@ -179,17 +180,7 @@ export default async function CommunityPostDetail({
           <CommentBox postId={params.id} />
         </div>
 
-        <div className="my-5">
-          <TextArea
-            name="description"
-            required
-            placeholder="질문에 답변해 보세요!"
-          />
-
-          <button className="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 border border-transparent rounded-md shadow-sm text-sm text-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none">
-            댓글 입력 하기
-          </button>
-        </div>
+        <CommentForm postId={id} />
       </div>
     </>
   );
