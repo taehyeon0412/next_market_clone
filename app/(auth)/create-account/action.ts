@@ -12,6 +12,7 @@ import bcrypt from "bcrypt";
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import getSession from "@/app/_libs/_server/session";
+import noImage from "@/public/asset/noImage.png";
 
 const formSchema = z
   .object({
@@ -70,6 +71,7 @@ export async function createAccount(prevState: any, formData: FormData) {
         username: result.data.username,
         email: result.data.email,
         password: hashedPassword,
+        avatar: noImage.src,
       },
       select: {
         id: true,

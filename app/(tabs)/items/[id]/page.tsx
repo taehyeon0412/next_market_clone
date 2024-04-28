@@ -60,6 +60,10 @@ export default async function ItemDetail({
     const sellerId = item.userId;
     const buyerId = session.id!;
 
+    if (sellerId === buyerId) {
+      return;
+    }
+
     // 먼저 판매자와 구매자가 모두 포함된 채팅방 검색
     const rooms = await db.chatRoom.findMany({
       where: {
