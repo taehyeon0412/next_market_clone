@@ -8,20 +8,22 @@ datasource db {
 }
 
 model User {
-  id         Int       @id @default(autoincrement()) //첫번째 사용자는 자동으로 1부터 시작
-  username   String    @unique
-  phone      String?   @unique
-  email      String?   @unique
+  id         Int        @id @default(autoincrement()) //첫번째 사용자는 자동으로 1부터 시작
+  username   String     @unique
+  phone      String?    @unique
+  email      String?    @unique
   password   String?
-  kakao_id   String?   @unique
-  github_id  String?   @unique
+  kakao_id   String?    @unique
+  github_id  String?    @unique
   avatar     String?
-  created_at DateTime  @default(now()) //새유저가 만들어질때 그 시점의 날짜
-  updated_at DateTime  @updatedAt //수정될 때 마다 수정된 시간을 넣음
+  created_at DateTime   @default(now()) //새유저가 만들어질때 그 시점의 날짜
+  updated_at DateTime   @updatedAt //수정될 때 마다 수정된 시간을 넣음
   items      Item[]
   posts      Post[]
   comments   Comment[]
   likes      Like[]
+  chat_rooms ChatRoom[]
+  messages   Message[]
 }
 
 //Cascade = 기존 사용자가 탈퇴할때 연관된 모든 것이 없어지게 함 
@@ -77,4 +79,26 @@ model Like {
   postId Int
 
   @@id(name: "id", [userId, postId])
+}
+
+model ChatRoom {
+  id    String @id @default(cuid()) //랜덤문자 보안을 위해
+  users User[]
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  messages   Message[]
+}
+
+model Message {
+  id      Int    @id @default(autoincrement())
+  payload String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  room       ChatRoom @relation(fields: [chatRoomId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+  chatRoomId String
+  userId     Int
 }
