@@ -57,25 +57,55 @@ export default async function ItemDetail({
     "use server";
 
     const session = await getSession();
-    const room = await db.chatRoom.create({
-      data: {
+    const sellerId = item.userId;
+    const buyerId = session.id!;
+
+    // 먼저 판매자와 구매자가 모두 포함된 채팅방 검색
+    const rooms = await db.chatRoom.findMany({
+      where: {
         users: {
-          connect: [
-            {
-              id: item.userId, //판매자
+          some: {
+            id: {
+              in: [sellerId, buyerId],
             },
-            {
-              id: session.id, //구매자(현재 로그인 된 사용자)
-            },
-          ],
+          },
         },
       },
-      select: {
-        id: true, //room의 id
+      include: {
+        users: true,
       },
     });
 
-    redirect(`/chats/${room.id}`);
+    const existingRoom = rooms.find(
+      (room) =>
+        room.users.length === 2 &&
+        room.users.every((user) => [sellerId, buyerId].includes(user.id))
+    );
+    //every = 배열의 모든 요소가 테스트함수를 통과하면 true가 됨
+
+    let roomId;
+
+    if (existingRoom) {
+      // 이미 존재하는 채팅방이 있다면 그 방의 ID를 사용
+      roomId = existingRoom.id;
+    } else {
+      // 존재하지 않는다면 새로운 채팅방 생성
+      const newRoom = await db.chatRoom.create({
+        data: {
+          users: {
+            connect: [{ id: sellerId }, { id: buyerId }],
+          },
+        },
+        select: {
+          id: true, // 새 방의 id
+        },
+      });
+      roomId = newRoom.id;
+    }
+
+    // 생성된 또는 찾은 채팅방으로 리디렉션
+
+    redirect(`/chats/${roomId}`);
   };
 
   return (
