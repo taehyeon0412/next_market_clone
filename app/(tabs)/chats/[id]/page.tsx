@@ -71,7 +71,11 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
   return (
     <>
       <Layout canGoBack />
-      <MessagesList initialMessages={initialMessages} userId={session.id!} />
+      <MessagesList
+        chatRoomId={params.id}
+        initialMessages={initialMessages}
+        userId={session.id!}
+      />
     </>
   );
 }
