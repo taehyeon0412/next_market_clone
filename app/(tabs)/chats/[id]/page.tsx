@@ -1,32 +1,77 @@
 import Layout from "@/app/_components/layout-bar";
-import Message from "@/app/_components/message";
-import type { NextPage } from "next";
+import MessagesList from "@/app/_components/messages-list";
+import db from "@/app/_libs/_server/db";
+import getSession from "@/app/_libs/_server/session";
+import { Prisma } from "@prisma/client";
+import { notFound } from "next/navigation";
 
-const ChatDetail: NextPage = () => {
+async function getRoom(id: string) {
+  const room = await db.chatRoom.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      users: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+
+  if (room) {
+    const session = await getSession();
+    const canSee = Boolean(room.users.find((user) => user.id === session.id!));
+    if (!canSee) {
+      return null;
+    }
+  }
+  //room에 있는 user.id와 session.id가 같을 경우에만 채팅방을 볼 수 있도록 함
+  //다른 사용자가 url을 알아내서 강제로 보는것을 막기 위함
+  return room;
+}
+//채팅방을 찾는 함수
+
+async function getMessages(chatRoomId: string) {
+  const messages = await db.message.findMany({
+    where: {
+      chatRoomId: chatRoomId,
+    },
+    select: {
+      id: true,
+      payload: true,
+      created_at: true,
+      userId: true,
+      user: {
+        select: {
+          avatar: true,
+          username: true,
+        },
+      },
+    },
+  });
+  return messages;
+}
+//db에 있는 메세지를 모두 가져오는 함수
+
+export type initialMessages = Prisma.PromiseReturnType<typeof getMessages>;
+//타입이 변할때마다 교체 안해도 되도록 Prisma에서 타입을 받아옴
+
+//타입스크립트에게 params가 string인 id가 있는 object라고 알려줌
+export default async function ChatRoom({ params }: { params: { id: string } }) {
+  const room = await getRoom(params.id);
+
+  if (!room) {
+    return notFound();
+  }
+
+  const initialMessages = await getMessages(params.id);
+  const session = await getSession();
+
   return (
     <>
       <Layout canGoBack />
-      <div className="py-10 px-4 space-y-4">
-        <Message message="Hi how much are you selling them for?" />
-        <Message message="I want ￦20,000" reversed />
-        <Message message="미쳤어" />
-
-        <div className="fixed w-full mx-auto max-w-md bottom-2 left-0 right-0 inset-x-0">
-          <div className="relative flex items-center">
-            <input
-              type="text"
-              className="shadow-sm rounded-full w-full border-gray-300 focus:ring-orange-500 focus:outline-none focus:border-orange-500 pr-12"
-            />
-            <div className="absolute inset-y-0 flex py-1.5 pr-1.5 right-0">
-              <button className="flex focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none items-center bg-orange-500 rounded-full px-3 hover:bg-orange-600 cursor-pointer text-sm text-white">
-                &rarr;
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <MessagesList initialMessages={initialMessages} userId={session.id!} />
     </>
   );
-};
-
-export default ChatDetail;
+}

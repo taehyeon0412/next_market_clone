@@ -3,9 +3,7 @@ import { formatToWon } from "@/app/_libs/_client/utils";
 import db from "@/app/_libs/_server/db";
 import getSession from "@/app/_libs/_server/session";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import DeleteItem from "./delete-item";
 import ItemDeleteButton from "./delete-button";
 
 async function getIsOwner(userId: number) {
@@ -54,6 +52,31 @@ export default async function ItemDetail({
   //item의 id가 없다면 notFound
 
   const isOwner = await getIsOwner(item.userId);
+
+  const createChatRoom = async () => {
+    "use server";
+
+    const session = await getSession();
+    const room = await db.chatRoom.create({
+      data: {
+        users: {
+          connect: [
+            {
+              id: item.userId, //판매자
+            },
+            {
+              id: session.id, //구매자(현재 로그인 된 사용자)
+            },
+          ],
+        },
+      },
+      select: {
+        id: true, //room의 id
+      },
+    });
+
+    redirect(`/chats/${room.id}`);
+  };
 
   return (
     <>
@@ -129,12 +152,11 @@ export default async function ItemDetail({
               <div className="flex gap-4">
                 {isOwner ? <ItemDeleteButton itemId={item.id} /> : null}
 
-                <Link
-                  className="bg-orange-500 px-3 py-2 rounded-md text-white font-semibold text-sm"
-                  href={""}
-                >
-                  채팅하기
-                </Link>
+                <form action={createChatRoom}>
+                  <button className="bg-orange-500 px-3 py-2 rounded-md text-white font-semibold text-sm">
+                    채팅하기
+                  </button>
+                </form>
               </div>
             </div>
             {/* 하단 가격,채팅바 */}
