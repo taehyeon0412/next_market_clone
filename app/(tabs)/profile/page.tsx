@@ -208,14 +208,8 @@ export default async function Profile() {
           </div>
 
           <div className="mt-4 text-gray-600 text-sm">
-            <p>
-              Normally, both your asses would be dead as fucking fried chicken,
-              but you happen to pull this shit while I&apos;m in a transitional
-              period so I don&apos;t wanna kill you, I wanna help you. But I
-              can&apos;t give you this case, it don&apos;t belong to me.
-              Besides, I&apos;ve already been through too much shit this morning
-              over this case to hand it over to your dumb ass.
-            </p>
+            <p>깨끗한 새제품이고 거래후에 맛있는 과자도 주셨어요!</p>
+            <p>친절하셔요ㅋㅋ 잘쓰겠습니다~</p>
           </div>
         </div>
       </div>

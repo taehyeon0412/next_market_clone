@@ -25,6 +25,9 @@ async function getPosts() {
         }, //_count는 post를 가리키는 요소의 개수를 카운팅 해줌
       },
     },
+    orderBy: {
+      created_at: "desc",
+    },
   });
 
   return posts;

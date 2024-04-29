@@ -4,7 +4,7 @@ import db from "@/app/_libs/_server/db";
 import getSession from "@/app/_libs/_server/session";
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
-import ItemDeleteButton from "./delete-button";
+import DeleteModal from "@/app/_components/delete-modal";
 
 async function getIsOwner(userId: number) {
   const session = await getSession();
@@ -184,7 +184,7 @@ export default async function ItemDetail({
               </div>
 
               <div className="flex gap-4">
-                {isOwner ? <ItemDeleteButton itemId={item.id} /> : null}
+                {isOwner ? <DeleteModal Id={item.id} menu="item" /> : null}
 
                 <form action={createChatRoom}>
                   <button className="bg-orange-500 px-3 py-2 rounded-md text-white font-semibold text-sm">
@@ -199,7 +199,7 @@ export default async function ItemDetail({
 
         {/* 섹터 구분 */}
 
-        <div>
+        <div className="pb-24">
           <h2 className="text-2xl font-bold text-gray-900">비슷한 상품</h2>
           <div className="mt-6 grid grid-cols-2 gap-4">
             {[1, 2, 3, 4, 5, 6].map((_, i) => (

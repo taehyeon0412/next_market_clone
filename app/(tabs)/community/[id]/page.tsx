@@ -8,6 +8,17 @@ import { notFound } from "next/navigation";
 import LikeButton from "./../../../_components/like-button";
 import { CommentBox } from "@/app/_components/comment-box";
 import CommentForm from "@/app/_components/comment-form";
+import DeleteModal from "@/app/_components/delete-modal";
+
+async function getIsOwner(userId: number) {
+  const session = await getSession();
+  if (session.id) {
+    return session.id === userId;
+    //db에 있는 userId와 upload한 userId가 같다면 해당사용자는 true
+  }
+  return false; //나머지는 false
+}
+//upload한 post의 user를 찾는 함수
 
 async function getPost(id: number) {
   try {
@@ -109,6 +120,8 @@ export default async function CommunityPostDetail({
 
   const { likeCount, isLiked } = await getLikeStatus(id);
 
+  const isOwner = await getIsOwner(post.userId);
+
   return (
     <>
       <Layout canGoBack />
@@ -117,25 +130,30 @@ export default async function CommunityPostDetail({
           동네질문
         </span>
 
-        <div className="flex mb-3 px-4 cursor-pointer py-3  border-b items-center space-x-3">
-          <div className="w-10 h-10 rounded-full bg-slate-300">
-            {post.user.avatar ? (
-              <Image
-                src={post.user.avatar}
-                alt="profile image"
-                className="rounded-full w-10 h-10 bg-cover"
-                width={64}
-                height={64}
-              />
-            ) : (
-              <div className="w-10 h-10 rounded-full bg-slate-300"></div>
-            )}
+        <div className="flex mb-3 px-4 py-3  border-b items-center justify-between space-x-3">
+          <div className="flex items-center gap-4 ">
+            <div className="w-10 h-10 rounded-full bg-slate-300">
+              {post.user.avatar ? (
+                <Image
+                  src={post.user.avatar}
+                  alt="profile image"
+                  className="rounded-full w-10 h-10 bg-cover"
+                  width={64}
+                  height={64}
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-slate-300"></div>
+              )}
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-700">
+                {post.user.username}
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-gray-700">
-              {post.user.username}
-            </p>
-          </div>
+          {/* 프로필 정보 */}
+
+          {isOwner ? <DeleteModal Id={post.id} menu="post" /> : null}
         </div>
 
         <div>
