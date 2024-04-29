@@ -47,7 +47,7 @@ async function getPost(id: number) {
 
 const getCachedPost = nextCache(getPost, ["post-detail"], {
   tags: ["post-detail"],
-  revalidate: 0.1,
+  revalidate: 1,
 });
 
 async function getLikeStatus(postId: number) {
@@ -57,7 +57,7 @@ async function getLikeStatus(postId: number) {
     return { likeCount: 0, isLiked: false };
   }
 
-  const isLikedData = await db.like.findFirst({
+  const isLikedData = await db.like.findMany({
     where: {
       postId,
       userId: session.id,
@@ -65,7 +65,7 @@ async function getLikeStatus(postId: number) {
   });
   //로그인한 유저가 생성한 like를 찾는 함수
 
-  const isLiked = !!isLikedData && isLikedData.userId === session.id;
+  const isLiked = isLikedData.some((data) => data.userId === session.id);
 
   const likeCount = await db.like.count({
     where: {
@@ -140,8 +140,13 @@ export default async function CommunityPostDetail({
 
         <div>
           <div className="mt-2 text-gray-700">
-            <span className="text-orange-500 font-medium">Q.</span>
-            <span className="pl-2 font-medium">{post.title}</span>
+            <div>
+              <span className="text-orange-500 font-medium">Q.</span>
+              <span className="pl-2 font-medium">{post.title}</span>
+            </div>
+            <div className="px-6 py-4 border-2 mt-4 rounded-xl">
+              <p>{post.description}</p>
+            </div>
           </div>
 
           <div className="flex justify-between mt-3 text-gray-700 py-2.5 border-t border-b-[2px] w-full">
