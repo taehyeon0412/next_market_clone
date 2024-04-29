@@ -7,10 +7,10 @@ import { formatToTimeAgo } from "../_libs/_client/utils";
 import { RealtimeChannel, createClient } from "@supabase/supabase-js";
 import { saveMessage } from "../(tabs)/chats/[id]/action";
 
-const SUPABASE_PUBLIC_KEY =
+export const SUPABASE_PUBLIC_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImltdnFhemp5bWJnY3h2aWJpbnN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzMjIwMDIsImV4cCI6MjAyOTg5ODAwMn0.NfYYn_TQgtnFXzdweiKa_TcFsEYaudbfytAXfEaYSQI";
 
-const SUPABASE_URL = "https://imvqazjymbgcxvibinsu.supabase.co";
+export const SUPABASE_URL = "https://imvqazjymbgcxvibinsu.supabase.co";
 
 interface initialMessagesProps {
   initialMessages: initialMessages;

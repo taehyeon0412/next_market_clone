@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { cls } from "../_libs/_client/utils";
 import { useRouter, usePathname, redirect } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface LayoutProps {
   title?: string;
@@ -26,6 +26,11 @@ export default function Layout({
     } else if (/^\/items\/.+/.test(pathname)) {
       router.push("/home");
       //items/[id]일때 뒤로가기 누르면 upload로 이동되는 경우가 있어서 home으로 가게 만듦
+    } else if (/^\/chats\/.+/.test(pathname)) {
+      router.push("/chats");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } else {
       router.back();
     }
