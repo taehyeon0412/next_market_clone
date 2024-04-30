@@ -52,7 +52,7 @@ export default async function Community() {
               동네질문
             </span>
 
-            <div className="mt-2 text-gray-700">
+            <div className="mt-2 text-gray-700 overflow-hidden whitespace-nowrap text-ellipsis max-w-[300px] sm:max-w-[450px]">
               <span className="text-orange-500 font-medium">Q.</span>
               <span className="pl-2 font-medium">{post.title}</span>
             </div>

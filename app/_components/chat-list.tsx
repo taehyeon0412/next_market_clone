@@ -43,8 +43,10 @@ export default function ChatList({
 
       <div className="w-full">
         <p className=" text-gray-700">{username}</p>
-        <div className="flex justify-between *:text-sm font-medium text-gray-500">
-          <span>{lastMessage}</span>
+        <div className="flex justify-between *:text-sm font-medium text-gray-500 ">
+          <span className="overflow-hidden whitespace-nowrap text-ellipsis max-w-[250px] sm:max-w-[350px]">
+            {lastMessage}
+          </span>
           <span> {formatToTimeAgo(updated_at.toString())}</span>
         </div>
       </div>

@@ -13,7 +13,12 @@ export default async function Write() {
     <>
       <Layout canGoBack />
       <form action={action} className="px-4 pb-10">
-        <Input name="title" label="" placeholder="제목을 입력하세요!" />
+        <Input
+          name="title"
+          label=""
+          placeholder="제목을 입력하세요!"
+          required
+        />
         <TextArea
           required
           name="description"

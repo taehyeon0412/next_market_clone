@@ -1,3 +1,6 @@
+"use client";
+import { useState } from "react";
+
 interface InputProps {
   label: string;
   name: string;
@@ -13,6 +16,15 @@ export default function Input({
   kind = "text", //kind의 기본값은 text이고 나머지값들은 객체로 받아옴
   ...rest //input으로 오는 모든 props를 ...rest로 받음
 }: InputProps) {
+  const [price, setPrice] = useState("");
+
+  const handlePriceChange = (event: any) => {
+    const value = event.target.value;
+    if (value.length <= 8) {
+      setPrice(value.replace(/[^0-9]/g, ""));
+    }
+  };
+
   return (
     <div>
       <label
@@ -39,6 +51,8 @@ export default function Input({
             <span className="text-gray-500 text-sm">￦</span>
           </div>
           <input
+            onChange={handlePriceChange}
+            value={price}
             name={name}
             id={name}
             {...rest}

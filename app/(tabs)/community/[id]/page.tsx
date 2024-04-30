@@ -158,12 +158,14 @@ export default async function CommunityPostDetail({
 
         <div>
           <div className="mt-2 text-gray-700">
-            <div>
+            <div className="*:break-words sm:max-w-[470px] max-w-[320px]">
               <span className="text-orange-500 font-medium">Q.</span>
-              <span className="pl-2 font-medium">{post.title}</span>
+              <span className="pl-2 font-medium ">{post.title}</span>
             </div>
             <div className="px-6 py-4 border-2 mt-4 rounded-xl">
-              <p>{post.description}</p>
+              <p className="break-words sm:max-w-[450px] max-w-[300px]">
+                {post.description}
+              </p>
             </div>
           </div>
 

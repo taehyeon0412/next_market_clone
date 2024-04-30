@@ -29,12 +29,18 @@ export default function ListItem({
           <Image fill src={photo} alt={title} className="object-cover" />
         </div>
 
-        <div className="flex flex-col gap-1">
-          <span className="text-lg font-medium">{title}</span>
-          <span className="text-sm text-neutral-400">
-            {formatToTimeAgo(created_at.toString())}
-          </span>
-          <span className="text-lg font-semibold">{formatToWon(price)}원</span>
+        <div className="flex flex-col gap-1 h-full justify-between break-words max-w-[280px]">
+          <div className="flex flex-col pt-4">
+            <span className="text-lg font-medium ">{title}</span>
+            <span className="text-sm text-neutral-400">
+              {formatToTimeAgo(created_at.toString())}
+            </span>
+          </div>
+          <div>
+            <span className="text-lg font-semibold">
+              {formatToWon(price)}원
+            </span>
+          </div>
         </div>
       </div>
 

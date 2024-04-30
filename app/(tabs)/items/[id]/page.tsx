@@ -33,6 +33,7 @@ async function getItem(id: number) {
   /* console.log(item); */
   return item;
 }
+//아이템 찾기
 
 export default async function ItemDetail({
   params,
@@ -111,6 +112,13 @@ export default async function ItemDetail({
 
     redirect(`/chats/${roomId}`);
   };
+  //채팅방
+
+  const goEdit = async () => {
+    "use server";
+    redirect(`/items/${item.id}/edit`);
+  };
+  //수정페이지
 
   return (
     <>
@@ -124,7 +132,7 @@ export default async function ItemDetail({
           </div>
           {/* 상품 이미지 */}
 
-          <div className="flex  cursor-pointer py-3 border-t border-b items-center space-x-3">
+          <div className="flex py-3 border-t border-b items-center space-x-3">
             <div className="relative size-11 rounded-full bg-slate-300">
               {item.user.avatar !== null ? (
                 <Image
@@ -149,11 +157,15 @@ export default async function ItemDetail({
 
           {/* Main */}
 
-          <div className="mt-5 ">
-            <h1 className="text-3xl font-semibold text-gray-900">
-              {item.title}
-            </h1>
-            <p className="text-base my-6 text-gray-700">{item.description}</p>
+          <div className="mt-5 *:break-words max-w-[480px]">
+            <div>
+              <h1 className="text-3xl font-semibold text-gray-900 ">
+                {item.title}
+              </h1>
+              <p className="text-base my-6 text-gray-700 ">
+                {item.description}
+              </p>
+            </div>
 
             <div className="fixed w-full border-t bottom-0 mx-auto left-0 right-0 max-w-lg p-5 pb-5 bg-white flex justify-between items-center">
               <div className="flex items-center">
@@ -185,12 +197,21 @@ export default async function ItemDetail({
 
               <div className="flex gap-4">
                 {isOwner ? <DeleteModal Id={item.id} menu="item" /> : null}
+                {isOwner ? (
+                  <form action={goEdit}>
+                    <button className="bg-orange-500 px-3 py-2 rounded-md text-white font-semibold text-sm">
+                      수정하기
+                    </button>
+                  </form>
+                ) : null}
 
-                <form action={createChatRoom}>
-                  <button className="bg-orange-500 px-3 py-2 rounded-md text-white font-semibold text-sm">
-                    채팅하기
-                  </button>
-                </form>
+                {!isOwner ? (
+                  <form action={createChatRoom}>
+                    <button className="bg-orange-500 px-3 py-2 rounded-md text-white font-semibold text-sm">
+                      채팅하기
+                    </button>
+                  </form>
+                ) : null}
               </div>
             </div>
             {/* 하단 가격,채팅바 */}
