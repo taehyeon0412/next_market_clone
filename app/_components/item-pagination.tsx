@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { initialItems } from "../(tabs)/home/page";
 import ListItem from "./list-item";
 import { getMoreItems } from "../(tabs)/home/action";
+import { usePathname } from "next/navigation";
+import { cls } from "./../_libs/_client/utils";
 
 //홈 화면 아이템 리스트 페이지네이션
 
@@ -18,6 +20,9 @@ export default function ItemPagination({ initialItems }: ItemPaginationProps) {
   const [isLastPage, setIsLastPage] = useState(false);
 
   const trigger = useRef<HTMLSpanElement>(null);
+  const pathname = usePathname();
+  const currentItemId = pathname.split("/").pop();
+  //split("/")=> /기호를 기준으로 URL을 나눔 / pop=>URL의 가장 마지막 요소를 가져옴
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -57,10 +62,26 @@ export default function ItemPagination({ initialItems }: ItemPaginationProps) {
   //무한스크롤 함수
 
   return (
-    <div className="flex flex-col space-y-5 pb-12">
-      {items.map((item) => (
-        <ListItem key={item.id} {...item} />
-      ))}
+    <div
+      className={cls(
+        "pb-12 z-0",
+        pathname === "/home"
+          ? "flex flex-col space-y-5"
+          : /^\/items\/.+/.test(pathname)
+            ? "grid grid-cols-2 gap-4"
+            : ""
+      )}
+    >
+      {pathname === "/home"
+        ? items.map((item) => <ListItem key={item.id} {...item} />)
+        : /^\/items\/.+/.test(pathname)
+          ? items
+              .filter((item) => currentItemId !== item.id.toString())
+              .map((item) => <ListItem {...item} />)
+          : null}
+      {/* 무한페이지네이션 아이템 리스트 
+          필터는 내가 보고있는 아이템이 다른상품 리스트에 안나오게 하기위해서 함
+      */}
 
       {!isLastPage ? (
         <span

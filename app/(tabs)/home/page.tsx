@@ -12,9 +12,7 @@ nextCache의 인수
 2.keyParts = 함수가 리턴하는 데이터를 cache안에서 식별할 수 있게 해줌
   */
 
-async function getInitialItems() {
-  console.log("hit");
-
+export async function getInitialItems() {
   const items = await db.item.findMany({
     select: {
       title: true,

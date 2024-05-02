@@ -5,6 +5,8 @@ import getSession from "@/app/_libs/_server/session";
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import DeleteModal from "@/app/_components/delete-modal";
+import { getInitialItems } from "../../home/page";
+import ItemPagination from "@/app/_components/item-pagination";
 
 async function getIsOwner(userId: number) {
   const session = await getSession();
@@ -120,6 +122,9 @@ export default async function ItemDetail({
   };
   //수정페이지
 
+  const initialItems = await getInitialItems();
+  //무한페이지네이션 가져오기
+
   return (
     <>
       <Layout canGoBack />
@@ -167,7 +172,7 @@ export default async function ItemDetail({
               </p>
             </div>
 
-            <div className="fixed w-full border-t bottom-0 mx-auto left-0 right-0 max-w-lg p-5 pb-5 bg-white flex justify-between items-center">
+            <div className="z-50 fixed w-full border-t bottom-0 mx-auto left-0 right-0 max-w-lg p-5 pb-5 bg-white flex justify-between items-center">
               <div className="flex items-center">
                 <button className="p-3 flex rounded-md items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500">
                   <svg
@@ -220,16 +225,13 @@ export default async function ItemDetail({
 
         {/* 섹터 구분 */}
 
-        <div className="pb-24">
-          <h2 className="text-2xl font-bold text-gray-900">비슷한 상품</h2>
-          <div className="mt-6 grid grid-cols-2 gap-4">
-            {[1, 2, 3, 4, 5, 6].map((_, i) => (
-              <div key={i}>
-                <div className="h-56 w-full mb-4 bg-slate-300" />
-                <h3 className=" text-gray-700 -mb-1">Galaxy S60</h3>
-                <span className="text-sm font-medium text-gray-900">$6</span>
-              </div>
-            ))}
+        <div>
+          <div className="pb-24 pt-10">
+            <h2 className="text-2xl font-bold text-gray-900">다른 상품</h2>
+
+            <div className="mt-6 z-0">
+              <ItemPagination initialItems={initialItems} />
+            </div>
           </div>
         </div>
 
