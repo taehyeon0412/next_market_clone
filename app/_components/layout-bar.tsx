@@ -31,6 +31,8 @@ export default function Layout({
       setTimeout(() => {
         window.location.reload();
       }, 1000);
+    } else if (/^\/community\/.+/.test(pathname)) {
+      router.push("/community");
     } else {
       router.back();
     }

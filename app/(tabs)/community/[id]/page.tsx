@@ -4,7 +4,7 @@ import db from "@/app/_libs/_server/db";
 import getSession from "@/app/_libs/_server/session";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import LikeButton from "./../../../_components/like-button";
 import { CommentBox } from "@/app/_components/comment-box";
 import CommentForm from "@/app/_components/comment-form";
@@ -122,6 +122,12 @@ export default async function CommunityPostDetail({
 
   const isOwner = await getIsOwner(post.userId);
 
+  const goEdit = async () => {
+    "use server";
+    redirect(`/community/${post.id}/edit`);
+  };
+  //수정페이지
+
   return (
     <>
       <Layout canGoBack />
@@ -153,7 +159,16 @@ export default async function CommunityPostDetail({
           </div>
           {/* 프로필 정보 */}
 
-          {isOwner ? <DeleteModal Id={post.id} menu="post" /> : null}
+          <div className="flex gap-2">
+            {isOwner ? <DeleteModal Id={post.id} menu="post" /> : null}
+            {isOwner ? (
+              <form action={goEdit}>
+                <button className="bg-orange-500 px-3 py-2 rounded-md text-white font-semibold text-sm">
+                  수정하기
+                </button>
+              </form>
+            ) : null}
+          </div>
         </div>
 
         <div>
