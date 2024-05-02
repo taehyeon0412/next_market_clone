@@ -77,7 +77,7 @@ export default function ItemPagination({ initialItems }: ItemPaginationProps) {
         : /^\/items\/.+/.test(pathname)
           ? items
               .filter((item) => currentItemId !== item.id.toString())
-              .map((item) => <ListItem {...item} />)
+              .map((item) => <ListItem key={item.id} {...item} />)
           : null}
       {/* 무한페이지네이션 아이템 리스트 
           필터는 내가 보고있는 아이템이 다른상품 리스트에 안나오게 하기위해서 함

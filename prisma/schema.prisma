@@ -24,6 +24,7 @@ model User {
   likes      Like[]
   chat_rooms ChatRoom[]
   messages   Message[]
+  hearts     Heart[]
 }
 
 //Cascade = 기존 사용자가 탈퇴할때 연관된 모든 것이 없어지게 함 
@@ -39,6 +40,20 @@ model Item {
   updated_at DateTime @updatedAt
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     Int
+  hearts     Heart[]
+}
+
+model Heart {
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  userId Int
+  itemId Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@id(name: "id", [userId, itemId])
 }
 
 model Post {
@@ -97,8 +112,9 @@ model Message {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  room       ChatRoom @relation(fields: [chatRoomId], references: [id])
-  user       User     @relation(fields: [userId], references: [id])
+  room ChatRoom @relation(fields: [chatRoomId], references: [id])
+  user User     @relation(fields: [userId], references: [id])
+
   chatRoomId String
   userId     Int
 }

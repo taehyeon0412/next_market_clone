@@ -20,7 +20,14 @@ export async function getInitialItems() {
       created_at: true,
       photo: true,
       id: true,
+
+      _count: {
+        select: {
+          hearts: true,
+        },
+      },
     },
+
     take: 8,
     orderBy: {
       created_at: "desc",

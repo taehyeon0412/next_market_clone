@@ -11,6 +11,10 @@ interface ListItemProps {
   created_at: Date;
   photo: string;
   id: number;
+
+  _count: {
+    hearts: number;
+  };
 }
 
 export default function ListItem({
@@ -19,6 +23,7 @@ export default function ListItem({
   created_at,
   photo,
   id,
+  _count,
 }: ListItemProps) {
   const pathname = usePathname();
 
@@ -66,7 +71,7 @@ export default function ListItem({
                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
               ></path>
             </svg>
-            <span>1</span>
+            <span>{_count.hearts}</span>
           </div>
 
           <div className="flex space-x-0.5 items-center text-sm text-gray-600">

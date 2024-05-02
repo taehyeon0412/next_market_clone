@@ -10,6 +10,12 @@ export async function getMoreItems(page: number) {
       created_at: true,
       photo: true,
       id: true,
+
+      _count: {
+        select: {
+          hearts: true,
+        },
+      },
     },
     skip: page * 8,
     take: 8,

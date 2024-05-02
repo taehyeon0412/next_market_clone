@@ -7,6 +7,7 @@ import { notFound, redirect } from "next/navigation";
 import DeleteModal from "@/app/_components/delete-modal";
 import { getInitialItems } from "../../home/page";
 import ItemPagination from "@/app/_components/item-pagination";
+import HeartButton from "@/app/_components/heart-button";
 
 async function getIsOwner(userId: number) {
   const session = await getSession();
@@ -36,6 +37,37 @@ async function getItem(id: number) {
   return item;
 }
 //아이템 찾기
+
+async function getHeartStatus(itemId: number) {
+  const session = await getSession();
+  if (!session || !session.id) {
+    console.error("Session or session ID is not valid.");
+    return { heartCount: 0, isHearted: false };
+  }
+
+  const isHeartData = await db.heart.findMany({
+    where: {
+      itemId,
+      userId: session.id,
+    },
+  });
+  //로그인한 유저가 생성한 like를 찾는 함수
+
+  const isHearted = isHeartData.some((data) => data.userId === session.id);
+
+  const heartCount = await db.heart.count({
+    where: {
+      itemId,
+    },
+  });
+  //itemId를 가진 item에서 생성된 heart 개수를 알려주는 함수
+
+  return {
+    heartCount,
+    isHearted,
+  };
+}
+//heart 카운팅, 유저가 생성한 heart 찾는 함수
 
 export default async function ItemDetail({
   params,
@@ -125,6 +157,9 @@ export default async function ItemDetail({
   const initialItems = await getInitialItems();
   //무한페이지네이션 가져오기
 
+  const { heartCount, isHearted } = await getHeartStatus(id);
+  //하트
+
   return (
     <>
       <Layout canGoBack />
@@ -174,23 +209,11 @@ export default async function ItemDetail({
 
             <div className="z-50 fixed w-full border-t bottom-0 mx-auto left-0 right-0 max-w-lg p-5 pb-5 bg-white flex justify-between items-center">
               <div className="flex items-center">
-                <button className="p-3 flex rounded-md items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500">
-                  <svg
-                    className="h-6 w-6 "
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
-                </button>
+                <HeartButton
+                  isHearted={isHearted}
+                  heartCount={heartCount}
+                  itemId={item.id}
+                />
                 {/* 하트 */}
 
                 <div className="border-r w-1 h-10 mr-4"></div>
