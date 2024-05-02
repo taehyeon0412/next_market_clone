@@ -86,7 +86,13 @@ export default function ItemPagination({
             ? items
                 .filter((item) => item.userId === userId!)
                 .map((item) => <ListItem key={item.id} {...item} />)
-            : null}
+            : pathname === "/profile/loved"
+              ? items
+                  .filter((item) =>
+                    item.hearts.some((hearts) => hearts.userId === userId)
+                  )
+                  .map((item) => <ListItem key={item.id} {...item} />)
+              : null}
       {/* 무한페이지네이션 아이템 리스트 
           필터는 내가 보고있는 아이템이 다른상품 리스트에 안나오게 하기위해서 함
       */}

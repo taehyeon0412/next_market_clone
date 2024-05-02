@@ -29,6 +29,12 @@ export async function getInitialItems() {
           hearts: true,
         },
       },
+
+      hearts: {
+        select: {
+          userId: true,
+        },
+      },
     },
 
     take: 8,

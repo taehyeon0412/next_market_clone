@@ -17,6 +17,12 @@ export async function getMoreItems(page: number) {
           hearts: true,
         },
       },
+
+      hearts: {
+        select: {
+          userId: true,
+        },
+      },
     },
     skip: page * 8,
     take: 8,
