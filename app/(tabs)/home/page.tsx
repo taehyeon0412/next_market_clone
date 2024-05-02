@@ -4,6 +4,8 @@ import db from "@/app/_libs/_server/db";
 import ItemPagination from "@/app/_components/item-pagination";
 import { Prisma } from "@prisma/client";
 import { unstable_cache as nextCache } from "next/cache";
+import { getIsOwner } from "../items/[id]/page";
+import getSession from "@/app/_libs/_server/session";
 
 /*const getCachedItems = nextCache(getInitialItems, ["home-items"]);
 
@@ -20,6 +22,7 @@ export async function getInitialItems() {
       created_at: true,
       photo: true,
       id: true,
+      userId: true,
 
       _count: {
         select: {
@@ -47,12 +50,13 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const initialItems = await getInitialItems();
+  const session = await getSession();
 
   return (
     <>
       <Layout hasTabBar title="홈" />
       <div className="flex flex-col space-y-5">
-        <ItemPagination initialItems={initialItems} />
+        <ItemPagination initialItems={initialItems} userId={session.id!} />
 
         <FloatingButton href="/items/upload">
           <svg

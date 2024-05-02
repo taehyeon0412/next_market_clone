@@ -10,6 +10,7 @@ export async function getMoreItems(page: number) {
       created_at: true,
       photo: true,
       id: true,
+      userId: true,
 
       _count: {
         select: {

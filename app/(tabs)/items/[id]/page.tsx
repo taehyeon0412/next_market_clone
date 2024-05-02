@@ -9,7 +9,7 @@ import { getInitialItems } from "../../home/page";
 import ItemPagination from "@/app/_components/item-pagination";
 import HeartButton from "@/app/_components/heart-button";
 
-async function getIsOwner(userId: number) {
+export async function getIsOwner(userId: number) {
   const session = await getSession();
   if (session.id) {
     return session.id === userId;

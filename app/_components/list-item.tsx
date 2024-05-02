@@ -11,6 +11,7 @@ interface ListItemProps {
   created_at: Date;
   photo: string;
   id: number;
+  userId: number;
 
   _count: {
     hearts: number;
@@ -23,11 +24,12 @@ export default function ListItem({
   created_at,
   photo,
   id,
+  userId,
   _count,
 }: ListItemProps) {
   const pathname = usePathname();
 
-  if (pathname === "/home") {
+  if (pathname === "/home" || "/profile/sold") {
     return (
       <Link
         href={`/items/${id}`}
@@ -74,7 +76,7 @@ export default function ListItem({
             <span>{_count.hearts}</span>
           </div>
 
-          <div className="flex space-x-0.5 items-center text-sm text-gray-600">
+          {/*  <div className="flex space-x-0.5 items-center text-sm text-gray-600">
             <svg
               className="w-4 h-4"
               fill="none"
@@ -90,7 +92,7 @@ export default function ListItem({
               ></path>
             </svg>
             <span>1</span>
-          </div>
+          </div> */}
         </div>
       </Link>
     );

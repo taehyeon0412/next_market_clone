@@ -67,7 +67,11 @@ export default function Layout({
             </svg>
           </button>
         ) : null}
-        {title ? <span>{title}</span> : null}
+        {title ? (
+          <div className="w-full flex justify-center pr-6">
+            <span>{title}</span>
+          </div>
+        ) : null}
       </div>
 
       <div className={cls("pt-16", hasTabBar ? "pb-6" : "")}>
