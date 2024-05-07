@@ -7,7 +7,7 @@ import Input from "@/app/_components/input";
 import { updateCommunity } from "./action";
 import { notFound } from "next/navigation";
 
-export default async function Write({ params }: { params: { id: string } }) {
+export default function Write({ params }: { params: { id: string } }) {
   const id = Number(params.id);
 
   if (isNaN(id)) {

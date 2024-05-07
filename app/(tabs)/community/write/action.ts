@@ -42,7 +42,7 @@ export async function uploadCommunity(_: any, formData: FormData) {
           id: true,
         },
       });
-      redirect(`/community`);
+      redirect("/community");
     }
   }
 

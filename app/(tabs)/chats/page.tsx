@@ -37,6 +37,7 @@ export default async function Chats() {
 
           return (
             <ChatList
+              key={room.id}
               id={room.id}
               src={otherUser?.avatar!}
               lastMessage={lastMessage}

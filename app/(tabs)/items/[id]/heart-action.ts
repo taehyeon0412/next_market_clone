@@ -17,7 +17,9 @@ export async function HeartItem(itemId: number) {
     });
 
     revalidateTag(`heart-status-${itemId}`);
-  } catch (e) {}
+  } catch (e) {
+    console.log("HeartItem error");
+  }
 }
 
 export async function noHeartItem(itemId: number) {
@@ -33,6 +35,8 @@ export async function noHeartItem(itemId: number) {
       },
     });
     revalidateTag(`heart-status-${itemId}`);
-  } catch (e) {}
+  } catch (e) {
+    console.log("noHeartItem error");
+  }
 }
 //하트 버튼 로직

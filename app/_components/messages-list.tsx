@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { initialMessages } from "../(tabs)/chats/[id]/page";
 import Image from "next/image";
 import { formatToTimeAgo } from "../_libs/_client/utils";

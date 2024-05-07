@@ -30,7 +30,9 @@ export async function deleteComment(commentId: number, userId: number) {
         id: commentId,
       },
     });
-  } catch (e) {}
+  } catch (e) {
+    console.log("comment error");
+  }
 }
 
 export async function createComment(

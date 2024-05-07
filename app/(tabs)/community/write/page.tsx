@@ -6,7 +6,7 @@ import { useFormState } from "react-dom";
 import { uploadCommunity } from "./action";
 import Input from "@/app/_components/input";
 
-export default async function Write() {
+export default function Write() {
   const [state, action] = useFormState(uploadCommunity, null);
 
   return (

@@ -9,7 +9,7 @@ import { getInitialItems } from "../../home/page";
 import ItemPagination from "@/app/_components/item-pagination";
 import HeartButton from "@/app/_components/heart-button";
 
-export async function getIsOwner(userId: number) {
+async function getIsOwner(userId: number) {
   const session = await getSession();
   if (session.id) {
     return session.id === userId;
@@ -253,7 +253,7 @@ export default async function ItemDetail({
             <h2 className="text-2xl font-bold text-gray-900">다른 상품</h2>
 
             <div className="mt-6 z-0">
-              <ItemPagination initialItems={initialItems} />
+              <ItemPagination initialItems={initialItems} userId={id} />
             </div>
           </div>
         </div>

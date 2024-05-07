@@ -17,7 +17,9 @@ export async function likePost(postId: number) {
     });
 
     revalidateTag(`like-status-${postId}`);
-  } catch (e) {}
+  } catch (e) {
+    console.log("likePost error");
+  }
 }
 
 export async function dislikePost(postId: number) {
@@ -33,6 +35,8 @@ export async function dislikePost(postId: number) {
       },
     });
     revalidateTag(`like-status-${postId}`);
-  } catch (e) {}
+  } catch (e) {
+    console.log("disLikePost error");
+  }
 }
 //좋아요 버튼 로직

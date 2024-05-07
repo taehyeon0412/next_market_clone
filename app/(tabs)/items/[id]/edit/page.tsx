@@ -11,12 +11,12 @@ import { notFound } from "next/navigation";
 
 export default function ItemEdit({ params }: { params: { id: string } }) {
   const id = Number(params.id);
+  const [preview, setPreview] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (isNaN(id)) {
     return notFound();
   }
-  const [preview, setPreview] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isOversizeImage = (file: File): boolean => {
     if (file.size > 4 * MB) {

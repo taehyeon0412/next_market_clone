@@ -1,10 +1,11 @@
 "use client";
 
 import { useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Modal from "react-modal";
 import DeleteItem from "../(tabs)/items/[id]/delete-item";
 import DeletePost from "../(tabs)/community/[id]/delete-post";
+import ReactModal from "react-modal";
 
 const customModalStyles: ReactModal.Styles = {
   content: {
@@ -37,6 +38,7 @@ type Props = {
 export default function DeleteModal({ Id, menu }: Props) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const closeModal = () => {
     setModalIsOpen(false);
@@ -101,7 +103,9 @@ export default function DeleteModal({ Id, menu }: Props) {
           className="text-base
   font-bold sm:text-2xl"
         >
-          정말로 물품을 지우시겠습니까?
+          {/^\/community\/.+/.test(pathname)
+            ? "정말로 질문을 지우시겠습니까?"
+            : "정말로 물품을 지우시겠습니까?"}
         </div>
         <div className="mt-12 flex justify-between items-center w-full h-1/5 sm:px-12 px-6 gap-6">
           <button

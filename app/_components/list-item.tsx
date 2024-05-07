@@ -11,7 +11,6 @@ interface ListItemProps {
   created_at: Date;
   photo: string;
   id: number;
-  userId: number;
 
   _count: {
     hearts: number;
@@ -24,12 +23,16 @@ export default function ListItem({
   created_at,
   photo,
   id,
-  userId,
   _count,
 }: ListItemProps) {
   const pathname = usePathname();
+  console.log(pathname);
 
-  if (pathname === "/home" || "/profile/sold") {
+  if (
+    pathname === "/home" ||
+    pathname === "/profile/sold" ||
+    pathname === "/profile/loved"
+  ) {
     return (
       <Link
         href={`/items/${id}`}

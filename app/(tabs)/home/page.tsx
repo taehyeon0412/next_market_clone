@@ -3,8 +3,6 @@ import FloatingButton from "../../_components/floating-button";
 import db from "@/app/_libs/_server/db";
 import ItemPagination from "@/app/_components/item-pagination";
 import { Prisma } from "@prisma/client";
-import { unstable_cache as nextCache } from "next/cache";
-import { getIsOwner } from "../items/[id]/page";
 import getSession from "@/app/_libs/_server/session";
 
 /*const getCachedItems = nextCache(getInitialItems, ["home-items"]);

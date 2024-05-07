@@ -47,7 +47,10 @@ export async function CommentBox({ postId }: CommentBoxProps) {
   return (
     <div>
       {comment.map((comment) => (
-        <div className="flex items-start space-x-3 border-b mb-2">
+        <div
+          key={comment.id}
+          className="flex items-start space-x-3 border-b mb-2"
+        >
           {comment.user.avatar ? (
             <Image
               src={comment.user.avatar}
