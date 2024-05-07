@@ -39,6 +39,5 @@ next-env.d.ts
 *.db
 *.db-journal
 
-public/*
-
 *.json
+.vercel

@@ -34,6 +34,8 @@ async function getPosts() {
 }
 //db 백엔드 연결
 
+export const dynamic = "force-dynamic";
+
 export default async function Community() {
   const posts = await getPosts();
   console.log(posts);
