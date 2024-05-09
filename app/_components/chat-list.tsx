@@ -31,13 +31,12 @@ export default function ChatList({
       key={id}
       className="flex px-4 cursor-pointer py-3 items-center space-x-3"
     >
-      <div className="w-12 h-12 rounded-full bg-slate-300">
+      <div className="relative w-14 h-12 rounded-full bg-slate-300">
         <Image
           className="bg-cover rounded-full w-12 h-12"
           src={src}
           alt="profile"
-          width={60}
-          height={60}
+          fill
         />
       </div>
 

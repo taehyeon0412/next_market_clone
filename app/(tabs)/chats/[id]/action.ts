@@ -5,7 +5,7 @@ import getSession from "@/app/_libs/_server/session";
 
 export async function saveMessage(payload: string, chatRoomId: string) {
   const session = await getSession();
-  await db.message.create({
+  const message = await db.message.create({
     data: {
       payload,
       chatRoomId,
@@ -13,4 +13,6 @@ export async function saveMessage(payload: string, chatRoomId: string) {
     },
     select: { id: true },
   });
+
+  return message;
 }

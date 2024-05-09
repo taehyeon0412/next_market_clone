@@ -46,11 +46,16 @@ export async function uploadItem(_: any, formData: FormData) {
   if (data.photo instanceof File) {
     const photoData = await data.photo.arrayBuffer();
     const file = bucket.file(data.photo.name);
-    await file.save(Buffer.from(photoData), {
-      metadata: { contentType: data.photo.type },
-    });
-    await file.makePublic();
-    data.photo = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
+
+    try {
+      await file.save(Buffer.from(photoData), {
+        metadata: { contentType: data.photo.type },
+      });
+      await file.makePublic();
+      data.photo = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
+    } catch (error) {
+      console.error("Failed at this point:", error);
+    }
   }
 
   const result = itemSchema.safeParse(data);

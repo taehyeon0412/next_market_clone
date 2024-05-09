@@ -41,6 +41,7 @@ export default function MessagesList({
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
     setMessages((prevMsgs) => [
       ...prevMsgs,
       {

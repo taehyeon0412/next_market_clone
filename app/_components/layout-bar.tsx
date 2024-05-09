@@ -30,7 +30,7 @@ export default function Layout({
       router.push("/chats");
       setTimeout(() => {
         window.location.reload();
-      }, 1000);
+      }, 300);
     } else if (/^\/community\/.+/.test(pathname)) {
       router.push("/community");
     } else {

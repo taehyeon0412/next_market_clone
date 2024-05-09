@@ -58,29 +58,41 @@ const commentSchema = z.object({
     .trim()
     .min(1, "한글자 이상 작성해 주세요.")
     .max(100, "100글자 이하로 작성해 주세요."),
+  postId: z.string(),
 });
 
-export async function uploadComment(formData: FormData, postId: number) {
+export async function uploadComment(_: any, formData: FormData) {
   const data = {
-    payload: formData.get("payload"),
+    payload: formData.get("comment"),
+    postId: formData.get("postId"),
   };
-
   const result = commentSchema.safeParse(data);
   if (!result.success) {
     return result.error.flatten();
   } else {
-    const session = await getSession();
-    if (session.id) {
-      await db.comment.create({
-        data: {
-          payload: result.data.payload,
-          postId: postId,
-          userId: session.id,
-        },
-        select: {
-          id: true,
-        },
-      });
+    try {
+      const session = await getSession();
+      const { id, created_at, payload, postId, updated_at, userId } =
+        await db.comment.create({
+          data: {
+            payload: result.data.payload,
+            post: {
+              connect: {
+                id: Number(result.data.postId),
+              },
+            },
+            user: {
+              connect: {
+                id: session.id,
+              },
+            },
+          },
+        });
+      //여기서 revalidateTag
+      revalidateTag("post-detail");
+      return { id, created_at, payload, postId, updated_at, userId };
+    } catch (e) {
+      console.log("추가되지 않았습니다.");
     }
   }
 }

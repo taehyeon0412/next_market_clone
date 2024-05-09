@@ -6,7 +6,6 @@ import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import LikeButton from "./../../../_components/like-button";
-import { CommentBox } from "@/app/_components/comment-box";
 import CommentForm from "@/app/_components/comment-form";
 import DeleteModal from "@/app/_components/delete-modal";
 
@@ -38,6 +37,20 @@ async function getPost(id: number) {
             avatar: true,
           },
         },
+        comments: {
+          select: {
+            id: true,
+            payload: true, //comment string
+            userId: true,
+            created_at: true,
+            user: {
+              select: {
+                avatar: true, //avatar of author
+                username: true, //username of author
+              },
+            },
+          },
+        },
         _count: {
           select: {
             comments: true,
@@ -58,7 +71,7 @@ async function getPost(id: number) {
 
 const getCachedPost = nextCache(getPost, ["post-detail"], {
   tags: ["post-detail"],
-  revalidate: 1,
+  revalidate: 10,
 });
 
 async function getLikeStatus(postId: number) {
@@ -118,6 +131,10 @@ export default async function CommunityPostDetail({
     return notFound();
   }
 
+  const postUser = post?.user;
+  const postComments = post?.comments;
+  const session = await getSession();
+
   const { likeCount, isLiked } = await getLikeStatus(id);
 
   const isOwner = await getIsOwner(post.userId);
@@ -132,95 +149,104 @@ export default async function CommunityPostDetail({
     <>
       <Layout canGoBack />
       <div className="px-4">
-        <span className="inline-flex my-2.5 ml-4 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
-          동네질문
-        </span>
-
-        <div className="flex mb-3 px-4 py-3  border-b items-center justify-between space-x-3">
-          <div className="flex items-center gap-4 ">
-            <div className="w-10 h-10 rounded-full bg-slate-300">
-              {post.user.avatar ? (
-                <Image
-                  src={post.user.avatar}
-                  alt="profile image"
-                  className="rounded-full w-10 h-10 bg-cover"
-                  width={64}
-                  height={64}
-                />
-              ) : (
-                <div className="w-10 h-10 rounded-full bg-slate-300"></div>
-              )}
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-700">
-                {post.user.username}
-              </p>
-            </div>
-          </div>
-          {/* 프로필 정보 */}
-
-          <div className="flex gap-2">
-            {isOwner ? <DeleteModal Id={post.id} menu="post" /> : null}
-            {isOwner ? (
-              <form action={goEdit}>
-                <button className="bg-orange-500 px-3 py-2 rounded-md text-white font-semibold text-sm">
-                  수정하기
-                </button>
-              </form>
-            ) : null}
-          </div>
-        </div>
-
         <div>
-          <div className="mt-2 text-gray-700">
-            <div className="*:break-words sm:max-w-[470px] max-w-[320px]">
-              <span className="text-orange-500 font-medium">Q.</span>
-              <span className="pl-2 font-medium ">{post.title}</span>
+          <span className="inline-flex my-2.5 ml-4 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
+            동네질문
+          </span>
+
+          <div className="flex mb-3 px-4 py-3  border-b items-center justify-between space-x-3">
+            <div className="flex items-center gap-4 ">
+              <div className="w-10 h-10 rounded-full bg-slate-300">
+                {post.user.avatar ? (
+                  <Image
+                    src={post.user.avatar}
+                    alt="profile image"
+                    className="rounded-full w-10 h-10 bg-cover"
+                    width={64}
+                    height={64}
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-slate-300"></div>
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-700">
+                  {post.user.username}
+                </p>
+              </div>
             </div>
-            <div className="px-6 py-4 border-2 mt-4 rounded-xl">
-              <p className="break-words sm:max-w-[450px] max-w-[300px]">
-                {post.description}
-              </p>
+            {/* 프로필 정보 */}
+
+            <div className="flex gap-2">
+              {isOwner ? <DeleteModal Id={post.id} menu="post" /> : null}
+              {isOwner ? (
+                <form action={goEdit}>
+                  <button className="bg-orange-500 px-3 py-2 rounded-md text-white font-semibold text-sm">
+                    수정하기
+                  </button>
+                </form>
+              ) : null}
             </div>
           </div>
 
-          <div className="flex justify-between mt-3 text-gray-700 py-2.5 border-t border-b-[2px] w-full">
-            <div className="flex space-x-5 items-center">
-              <LikeButton isLiked={isLiked} likeCount={likeCount} postId={id} />
-
-              {/* 좋아요 수 */}
-
-              <span className="flex space-x-2 items-center text-sm">
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                  ></path>
-                </svg>
-                <span>답변 {post._count.comments}</span>
-              </span>
-              {/* 코멘트 수 */}
+          <div>
+            <div className="mt-2 text-gray-700">
+              <div className="*:break-words sm:max-w-[470px] max-w-[320px]">
+                <span className="text-orange-500 font-medium">Q.</span>
+                <span className="pl-2 font-medium ">{post.title}</span>
+              </div>
+              <div className="px-6 py-4 border-2 mt-4 rounded-xl">
+                <p className="break-words sm:max-w-[450px] max-w-[300px]">
+                  {post.description}
+                </p>
+              </div>
             </div>
 
-            <div>
-              <span className="text-sm">조회수 {post.views}</span>
+            <div className="flex justify-between mt-3 text-gray-700 py-2.5 border-t border-b-[2px] w-full">
+              <div className="flex space-x-5 items-center">
+                <LikeButton
+                  isLiked={isLiked}
+                  likeCount={likeCount}
+                  postId={id}
+                />
+
+                {/* 좋아요 수 */}
+
+                <span className="flex space-x-2 items-center text-sm">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    ></path>
+                  </svg>
+                  <span>답변 {post._count.comments}</span>
+                </span>
+                {/* 코멘트 수 */}
+              </div>
+
+              <div>
+                <span className="text-sm">조회수 {post.views}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="px-4 my-5 space-y-5">
-          <CommentBox postId={params.id} />
+        <div className=" my-5 space-y-5">
+          <CommentForm
+            id={id}
+            sessionId={session.id!}
+            comments={postComments}
+            user={postUser}
+          />
         </div>
-
-        <CommentForm postId={id} />
       </div>
     </>
   );

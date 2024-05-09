@@ -24,6 +24,7 @@
     "react-hook-form": "^7.51.0",
     "react-modal": "^3.16.1",
     "twilio": "^5.0.2",
+    "uuid": "^9.0.1",
     "validator": "^13.11.0",
     "zod": "^3.22.4"
   },
@@ -32,6 +33,7 @@
     "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.18",
     "@types/react-modal": "^3.16.3",
+    "@types/uuid": "^9.0.8",
     "@types/validator": "^13.11.9",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
