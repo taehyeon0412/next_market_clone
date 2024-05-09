@@ -45,7 +45,7 @@ export default function CommentForm({
       created_at: new Date(),
       userId: sessionId,
       user: {
-        username: "optimistic",
+        username: "사용자",
         avatar: null,
       },
     };
@@ -75,17 +75,21 @@ export default function CommentForm({
         {optimisticState.map((comment) => (
           <div key={comment.id} className="px-4">
             <div className="flex items-start space-x-3 border-b mb-2">
-              <Image
-                src={`${user.avatar}`}
-                alt="profile image"
-                className="rounded-full w-8 h-8 bg-cover"
-                width={64}
-                height={64}
-              />
+              {comment.user.avatar ? (
+                <Image
+                  src={`${comment.user.avatar}`}
+                  alt="profile image"
+                  className="rounded-full w-8 h-8 bg-cover"
+                  width={64}
+                  height={64}
+                />
+              ) : (
+                <div className="rounded-full size-8 bg-slate-400"></div>
+              )}
 
               <div>
                 <span className="text-sm block font-medium text-gray-700">
-                  {user.username}
+                  {comment.user.username}
                 </span>
                 <span className="text-xs text-gray-500 block">
                   {formatToTimeAgo(comment.created_at.toString())}

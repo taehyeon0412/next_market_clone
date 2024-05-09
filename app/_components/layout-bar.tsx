@@ -28,9 +28,6 @@ export default function Layout({
       //items/[id]일때 뒤로가기 누르면 upload로 이동되는 경우가 있어서 home으로 가게 만듦
     } else if (/^\/chats\/.+/.test(pathname)) {
       router.push("/chats");
-      setTimeout(() => {
-        window.location.reload();
-      }, 300);
     } else if (/^\/community\/.+/.test(pathname)) {
       router.push("/community");
     } else {

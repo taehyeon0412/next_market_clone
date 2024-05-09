@@ -4,6 +4,7 @@ import db from "@/app/_libs/_server/db";
 import getSession from "@/app/_libs/_server/session";
 import { Prisma } from "@prisma/client";
 import { notFound } from "next/navigation";
+import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 
 async function getRoom(id: string) {
   const room = await db.chatRoom.findUnique({
@@ -54,6 +55,11 @@ async function getMessages(chatRoomId: string) {
 }
 //db에 있는 메세지를 모두 가져오는 함수
 
+const getCachedMessages = nextCache(getMessages, ["get-messages"], {
+  tags: ["get-messages"],
+  revalidate: 10,
+});
+
 async function getUserProfile() {
   const session = await getSession();
   const user = await db.user.findUnique({
@@ -80,7 +86,7 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
     return notFound();
   }
 
-  const initialMessages = await getMessages(params.id);
+  const initialMessages = await getCachedMessages(params.id);
   const session = await getSession();
   const user = await getUserProfile();
 
