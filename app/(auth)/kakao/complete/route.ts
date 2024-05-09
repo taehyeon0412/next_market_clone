@@ -4,6 +4,11 @@ import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
+  const isProduction = process.env.NODE_ENV === "production";
+  const KAKAO_REDIRECT_URL = isProduction
+    ? "https://next-market-clone.vercel.app/kakao/complete"
+    : "http://localhost:3000/kakao/complete";
+
   // 액세스 토큰 받기
   const url = req.nextUrl;
   const code = url.searchParams.get("code"); // URL의 검색 파라미터에서 `code`를 추출합니다.
@@ -15,7 +20,7 @@ export async function GET(req: NextRequest) {
     body: new URLSearchParams({
       grant_type: "authorization_code",
       client_id: process.env.KAKAO_CLIENT_ID!,
-      redirect_uri: process.env.KAKAO_REDIRECT_URL!,
+      redirect_uri: KAKAO_REDIRECT_URL,
       code: code ?? "",
     }),
   });
