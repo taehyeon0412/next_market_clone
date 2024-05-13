@@ -31,7 +31,6 @@ const formSchema = z
       .string()
       .min(PASSWORD_MIN_LENGTH, PASSWORD_MIN_LENGTH_ERROR)
       .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
-
     password_check: z
       .string()
       .min(PASSWORD_MIN_LENGTH, PASSWORD_MIN_LENGTH_ERROR),

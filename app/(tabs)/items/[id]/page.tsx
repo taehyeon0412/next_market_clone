@@ -168,7 +168,12 @@ export default async function ItemDetail({
 
         <div className="mb-8">
           <div className="relative aspect-square">
-            <Image fill src={item.photo} alt={item.title} />
+            <Image
+              fill
+              src={item.photo}
+              alt={item.title}
+              className="object-cover"
+            />
           </div>
           {/* 상품 이미지 */}
 
@@ -202,7 +207,7 @@ export default async function ItemDetail({
               <h1 className="text-3xl font-semibold text-gray-900 ">
                 {item.title}
               </h1>
-              <p className="text-base my-6 text-gray-700 ">
+              <p className="text-base my-6 text-gray-700 whitespace-pre-wrap">
                 {item.description}
               </p>
             </div>

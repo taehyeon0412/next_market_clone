@@ -98,12 +98,14 @@ export default function ItemPagination({
       */}
 
       {!isLastPage ? (
-        <span
-          ref={trigger}
-          className="text-white text-sm font-semibold bg-orange-500 w-fit mx-auto px-3 py-2 rounded-md hover:opacity-90 active:scale-95"
-        >
-          {isLoading ? "로딩 중" : "더보기"}
-        </span>
+        <div className="flex justify-center items-center pb-5 h-full">
+          <span
+            ref={trigger}
+            className="text-white text-sm font-semibold bg-orange-500 w-fit mx-auto px-3 py-2 rounded-md hover:opacity-90 active:scale-95"
+          >
+            {isLoading ? "로딩 중" : "더보기"}
+          </span>
+        </div>
       ) : null}
     </div>
   );
