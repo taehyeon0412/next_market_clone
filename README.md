@@ -111,8 +111,6 @@ const [state, action] = useFormState(createAccount, null); //action.ts에 있는
 
   </details>
 
-<br/>
-
 <details>
 <summary>validator - 패턴 유효성 검사 모듈</summary>
    
@@ -132,3 +130,58 @@ const phoneSchema = z.string().trim().refine(validator.isMobilePhone);
 ```
 </details>
 
+# Prisma
+
+<details>
+   <summary>개념 및 사용법</summary>
+
+   <br/>
+
+- 개념 
+  프리즈마는 대중적인 타입스크립트 지원 ORM 중 하나다.
+프리즈마 설치 전에 기본적인 DB 개발 환경은 갖춰두도록 하자. 설치 명령은 아래와 같다.
+
+<br/>
+
+```
+npm i prisma
+```
+
+- 사용법
+
+  설치 후 프로젝트에 프리즈마 적용을 위해 아래 명령을 실행한다.
+그러면, 루트에 prisma 폴더와 함께 그 아래 schema.prisma 파일이 새로 생성된다.
+덤으로 데이터베이스 스키마 정보 연동을 위한 환경변수 설정에 필요한 .env 파일도 알아서 생성해준다.
+
+```
+npx prisma init
+```
+
+이후 차근차근 진행하자
+
+```
+✔ Your Prisma schema was created at prisma/schema.prisma
+You can now open it in your favorite editor.
+
+warn You already have a .gitignore file. Don't forget to add `.env` in it to not commit any private information.
+
+Next steps:
+1. Set the DATABASE_URL in the .env file to point to your existing database. If your database has no tables yet, read https://pris.ly/d/getting-started
+2. Set the provider of the datasource block in schema.prisma to match your database: postgresql, mysql, sqlite, sqlserver, mongodb or cockroachdb.
+3. Run prisma db pull to turn your database schema into a Prisma schema.
+4. Run prisma generate to generate the Prisma Client. You can then start querying your database.
+
+More information in our documentation:
+https://pris.ly/d/getting-started
+```
+
+순서대로 하려면 먼저 .env 파일을 확인하고 데이터베이스 정보를 입력해준다.
+데이터베이스 정보(DATABASE_URL)는 개발자가 선택한 데이터베이스 유형마다 다른 패턴을 가지므로
+프리즈마 공식 사이트에서 정확히 확인하고 기재해야 한다.
+
+- 초기 .env 파일을 보면, 데이터베이스별 프리즈마 연동법을 설명한 <a href="https://www.prisma.io/docs/orm/reference/connection-urls" target="_blank">상세 페이지</a>가 기재돼 있으니 확인
+- 
+
+
+
+</details>
