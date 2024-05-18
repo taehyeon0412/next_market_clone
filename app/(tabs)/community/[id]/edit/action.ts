@@ -5,6 +5,7 @@ import fs from "fs/promises";
 import db from "@/app/_libs/_server/db";
 import getSession from "@/app/_libs/_server/session";
 import { notFound, redirect } from "next/navigation";
+import { revalidateTag } from "next/cache";
 
 const communitySchema = z.object({
   title: z.string({
@@ -58,6 +59,7 @@ export async function updateCommunity(
           id: true,
         },
       });
+      revalidateTag("post-detail");
       redirect(`/community/${community.id}`);
     }
   }
