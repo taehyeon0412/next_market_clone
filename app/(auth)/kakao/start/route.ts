@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
 export function GET() {
   const baseURL = "https://kauth.kakao.com/oauth/authorize";
@@ -21,5 +22,9 @@ export function GET() {
   const finalUrl = `${baseURL}?${formattedParams}`;
   //baseURL+formattedParams를 합쳐준다
 
-  return redirect(finalUrl);
+  const response = NextResponse.redirect(finalUrl);
+
+  response.headers.set("Cache-Control", "no-store"); // 캐시를 사용하지 않도록 설정
+
+  return response;
 }
