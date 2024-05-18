@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Button from "./_components/button";
 import "@/app/_libs/_server/db";
