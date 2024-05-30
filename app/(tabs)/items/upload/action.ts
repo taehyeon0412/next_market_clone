@@ -7,6 +7,7 @@ import getSession from "@/app/_libs/_server/session";
 import { redirect } from "next/navigation";
 import { Storage } from "@google-cloud/storage";
 import AWS from "aws-sdk";
+import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 
 /* // Google Cloud Storage 설정
 const storage = new Storage({
@@ -114,6 +115,7 @@ export async function uploadItem(_: any, formData: FormData) {
           id: true,
         },
       });
+      revalidateTag("home-detail");
       redirect(`/items/${item.id}`);
     }
   }

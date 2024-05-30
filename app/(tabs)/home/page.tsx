@@ -4,6 +4,7 @@ import db from "@/app/_libs/_server/db";
 import ItemPagination from "@/app/_components/item-pagination";
 import { Prisma } from "@prisma/client";
 import getSession from "@/app/_libs/_server/session";
+import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 
 /*const getCachedItems = nextCache(getInitialItems, ["home-items"]);
 
@@ -52,8 +53,13 @@ export type initialItems = Prisma.PromiseReturnType<typeof getInitialItems>;
 export const dynamic = "force-dynamic";
 //이페이지가 빌드할 때 next.js에게 dynamic-page라고 설명해줌
 
+const getCachedHome = nextCache(getInitialItems, ["home-detail"], {
+  tags: ["home-detail"],
+  revalidate: 10,
+});
+
 export default async function Home() {
-  const initialItems = await getInitialItems();
+  const initialItems = await getCachedHome();
   const session = await getSession();
 
   return (
