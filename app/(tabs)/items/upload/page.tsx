@@ -14,8 +14,8 @@ export default function Upload() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isOversizeImage = (file: File): boolean => {
-    if (file.size > 4 * MB) {
-      alert("파일 크기가 4MB를 초과했습니다.");
+    if (file.size > 10 * MB) {
+      alert("파일 크기가 10MB를 초과했습니다.");
       return true;
     }
     return false;

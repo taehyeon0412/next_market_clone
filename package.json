@@ -14,6 +14,7 @@
     "@supabase/supabase-js": "^2.42.7",
     "@tailwindcss/forms": "^0.5.7",
     "@types/bcrypt": "^5.0.2",
+    "aws-sdk": "^2.1630.0",
     "bcrypt": "^5.1.1",
     "iron-session": "^8.0.1",
     "next": "14.0.4",

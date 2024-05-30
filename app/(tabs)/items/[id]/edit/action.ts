@@ -6,12 +6,20 @@ import db from "@/app/_libs/_server/db";
 import getSession from "@/app/_libs/_server/session";
 import { notFound, redirect } from "next/navigation";
 import { Storage } from "@google-cloud/storage";
+import AWS from "aws-sdk";
 
-// Google Cloud Storage 설정
-const storage = new Storage({
-  keyFilename: "./spring-idiom-422608-a2-b800bdf6dc72.json",
+//AWS 설정
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION, // .env.local에서 설정한 리전 값 사용
 });
-const bucket = storage.bucket("carrot_project");
+
+const bucketName = process.env.AWS_BUCKET_NAME;
+
+if (!bucketName) {
+  throw new Error("AWS_BUCKET_NAME is not defined");
+}
 
 const itemSchema = z.object({
   photo: z.string({
@@ -51,15 +59,22 @@ export default async function updateItem(
 
   if (data.photo instanceof File) {
     const photoData = await data.photo.arrayBuffer();
-    const file = bucket.file(data.photo.name);
-    await file.save(Buffer.from(photoData), {
-      metadata: { contentType: data.photo.type },
-    });
-    await file.makePublic();
-    data.photo = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
+    const params = {
+      Bucket: bucketName!,
+      Key: data.photo.name,
+      Body: Buffer.from(photoData),
+      ContentType: data.photo.type,
+    };
+
+    try {
+      const uploadResult = await s3.upload(params).promise();
+      data.photo = uploadResult.Location;
+    } catch (error) {
+      console.error("Failed at this point:", error);
+    }
   }
 
-  //수정을 하면 기존 이미지는 삭제되고 새로운 이미지는 업로드 되야됨
+  // 수정을 하면 기존 이미지는 삭제되고 새로운 이미지는 업로드되어야 함
 
   const result = itemSchema.safeParse(data);
 
