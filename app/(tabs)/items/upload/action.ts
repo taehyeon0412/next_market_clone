@@ -44,6 +44,10 @@ const itemSchema = z.object({
   }),
 });
 
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export async function uploadItem(_: any, formData: FormData) {
   const data = {
     photo: formData.get("photo"),
@@ -86,6 +90,8 @@ export async function uploadItem(_: any, formData: FormData) {
     };
 
     try {
+      await delay(5000);
+
       const uploadResult = await s3.upload(params).promise();
       data.photo = uploadResult.Location;
     } catch (error) {
