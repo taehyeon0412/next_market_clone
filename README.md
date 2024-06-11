@@ -481,7 +481,7 @@ migration.sql 파일이 추가된 걸 확인할 수 있다.
 <br/>
 
 ### **2. 상품 탭 CRUD 구현**
-![2](https://github.com/taehyeon0412/next_market_clone/assets/71374539/eb793758-9102-4dd3-be83-a72affd02f8f)
+![2](https://github.com/taehyeon0412/next_market_clone/assets/71374539/543a7d71-66a6-4974-8a7c-b40102e976b4)
 
 <br/>
 
@@ -491,7 +491,7 @@ migration.sql 파일이 추가된 걸 확인할 수 있다.
 <br/>
 
 ### **3. 무한 스크롤 페이지 구현**
-![3](https://github.com/taehyeon0412/next_market_clone/assets/71374539/1f64d411-81be-4637-b8bf-bb8cdf1db1dc)
+![3](https://github.com/taehyeon0412/next_market_clone/assets/71374539/8b00daa9-eb54-4a45-80a8-f1760f858b2e)
 
 <br/>
 
@@ -500,7 +500,7 @@ migration.sql 파일이 추가된 걸 확인할 수 있다.
 <br/>
 
 ### **4. 동네생활 탭 CRUD 구현**
-![4](https://github.com/taehyeon0412/next_market_clone/assets/71374539/fe36e141-355d-4a67-9630-a577a8515351)
+![4](https://github.com/taehyeon0412/next_market_clone/assets/71374539/1dd37d34-11da-4709-8991-87dfe2bc27b8)
 
 <br/>
 
@@ -509,7 +509,7 @@ migration.sql 파일이 추가된 걸 확인할 수 있다.
 <br/>
 
 ### **5. 실시간 채팅**
-![5](https://github.com/taehyeon0412/next_market_clone/assets/71374539/2d79e446-93b5-4a32-9e4d-2ab007b8f39b)
+![5](https://github.com/taehyeon0412/next_market_clone/assets/71374539/9883ac3d-30a9-4a68-9055-e2265112ffdc)
 
 <br/>
 
@@ -518,7 +518,7 @@ migration.sql 파일이 추가된 걸 확인할 수 있다.
 <br/>
 
 ### **6. 마이페이지**
-![5](https://github.com/taehyeon0412/next_market_clone/assets/71374539/5b4ec640-2ab8-4261-b378-5ea581257cbc)
+![6](https://github.com/taehyeon0412/next_market_clone/assets/71374539/76c38fb7-040a-474b-a403-00aed1a68312)
 
 <br/>
 
@@ -527,7 +527,7 @@ migration.sql 파일이 추가된 걸 확인할 수 있다.
 <br/>
 
 ### **7. 실시간 갱신**
-![6](https://github.com/taehyeon0412/next_market_clone/assets/71374539/98e0f4c5-ee78-43ee-89f3-67953c6ce2fe)
+![7](https://github.com/taehyeon0412/next_market_clone/assets/71374539/e8ce52f5-6a30-4bb2-87f2-bb138f4c9f23)
 
 <br/>
 
