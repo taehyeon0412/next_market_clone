@@ -151,7 +151,7 @@ export default async function CommunityPostDetail({
       <div className="px-4">
         <div>
           <span className="inline-flex my-2.5 ml-4 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
-            동네질문
+            질문
           </span>
 
           <div className="flex mb-3 px-4 py-3  border-b items-center justify-between space-x-3">

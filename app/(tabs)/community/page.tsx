@@ -42,8 +42,8 @@ export default async function Community() {
 
   return (
     <>
-      <Layout hasTabBar title="동네생활" />
-      <div className="space-y-8 pb-20">
+      <Layout hasTabBar title="커뮤니티" />
+      <div className="space-y-8 pb-20 ">
         {posts.map((post) => (
           <Link
             href={`/community/${post.id}`}
@@ -51,7 +51,7 @@ export default async function Community() {
             className="px-4 flex flex-col items-start cursor-pointer"
           >
             <span className="flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
-              동네질문
+              질문
             </span>
 
             <div className="mt-2 text-gray-700 overflow-hidden whitespace-nowrap text-ellipsis max-w-[300px] sm:max-w-[450px]">
