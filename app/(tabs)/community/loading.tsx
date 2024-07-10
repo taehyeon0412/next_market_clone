@@ -3,7 +3,7 @@ import Layout from "@/app/_components/layout-bar";
 export default function Loading() {
   return (
     <>
-      <Layout title="동네생활" hasTabBar />
+      <Layout title="커뮤니티" hasTabBar />
       <div className="p-5 animate-pulse flex flex-col gap-5 pb-20">
         {[...Array(10)].map((_, i) => (
           <div
