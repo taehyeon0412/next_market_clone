@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate",
+    "preinstall": "npm install --include=optional"
   },
   "dependencies": {
     "@google-cloud/storage": "^7.11.0",
@@ -31,6 +33,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@prisma/client": "^5.10.2",
     "@types/node": "^20",
     "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.18",
@@ -47,5 +50,8 @@
     "prisma": "^5.10.2",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
+  },
+  "optionalDependencies": {
+    "sharp": "^0.33.4"
   }
 }

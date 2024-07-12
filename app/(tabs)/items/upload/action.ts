@@ -7,7 +7,15 @@ import getSession from "@/app/_libs/_server/session";
 import { redirect } from "next/navigation";
 import AWS from "aws-sdk";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
-import sharp from "sharp";
+
+////sharp 모듈을 로드
+//실패하면(예: 환경에서 모듈을 사용할 수 없는 경우) 오류를 기록하고 대체 메커니즘을 계속 사용
+let sharp: typeof import("sharp") | undefined;
+try {
+  sharp = require("sharp");
+} catch (error) {
+  console.error("로드 실패 sharp module:", error);
+}
 
 //AWS 설정
 const s3 = new AWS.S3({
@@ -60,10 +68,16 @@ export async function uploadItem(_: any, formData: FormData) {
   if (data.photo instanceof File) {
     const photoData = await data.photo.arrayBuffer();
 
+    let optimizedPhoto: Buffer;
+
     // Sharp를 사용하여 이미지 최적화
-    const optimizedPhoto = await sharp(Buffer.from(photoData))
-      .webp({ quality: 95 }) // WebP 형식으로 변환 및 압축 품질 설정
-      .toBuffer();
+    if (sharp) {
+      optimizedPhoto = await sharp(Buffer.from(photoData))
+        .webp({ quality: 95 }) // WebP 형식으로 변환 및 압축 품질 설정
+        .toBuffer();
+    } else {
+      optimizedPhoto = Buffer.from(photoData);
+    }
 
     const imgName = `${Date.now()}-${data.photo.name.split(".")[0]}.webp`;
     //Sharp를 사용하여 webp형식으로 바꿨으니 파일명도 webp 형식으로 바꿔줌
@@ -81,7 +95,7 @@ export async function uploadItem(_: any, formData: FormData) {
       const uploadResult = await s3.upload(params).promise();
       data.photo = uploadResult.Location;
     } catch (error) {
-      console.error("Failed at this point:", error);
+      console.error("실패지점:", error);
     }
   }
 
