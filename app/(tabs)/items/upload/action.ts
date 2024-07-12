@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 import AWS from "aws-sdk";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 
-////sharp 모듈을 로드
+//sharp 모듈을 로드
 //실패하면(예: 환경에서 모듈을 사용할 수 없는 경우) 오류를 기록하고 대체 메커니즘을 계속 사용
 let sharp: typeof import("sharp") | undefined;
 try {

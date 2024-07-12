@@ -40,5 +40,4 @@ next-env.d.ts
 *.db-journal
 
 *.json
-
-!vercel.json
+.vercel
