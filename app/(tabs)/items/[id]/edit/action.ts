@@ -5,8 +5,9 @@ import fs from "fs/promises";
 import db from "@/app/_libs/_server/db";
 import getSession from "@/app/_libs/_server/session";
 import { notFound, redirect } from "next/navigation";
-import { Storage } from "@google-cloud/storage";
+import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import AWS from "aws-sdk";
+import sharp from "sharp";
 
 //AWS 설정
 const s3 = new AWS.S3({
@@ -59,11 +60,20 @@ export default async function updateItem(
 
   if (data.photo instanceof File) {
     const photoData = await data.photo.arrayBuffer();
+
+    // Sharp를 사용하여 이미지 최적화
+    const optimizedPhoto = await sharp(Buffer.from(photoData))
+      .webp({ quality: 95 }) // WebP 형식으로 변환 및 압축 품질 설정
+      .toBuffer();
+
+    const imgName = `${Date.now()}-${data.photo.name.split(".")[0]}.webp`;
+    //Sharp를 사용하여 webp형식으로 바꿨으니 파일명도 webp 형식으로 바꿔줌
+
     const params = {
-      Bucket: bucketName!,
-      Key: data.photo.name,
-      Body: Buffer.from(photoData),
-      ContentType: data.photo.type,
+      Bucket: bucketName!, // bucketName이 undefined가 아님을 명시적으로 알림
+      Key: imgName, // 고유한 파일 이름 생성
+      Body: optimizedPhoto,
+      ContentType: "image/webp",
     };
 
     try {
@@ -102,6 +112,7 @@ export default async function updateItem(
           id: true,
         },
       });
+      revalidateTag("home-detail");
       redirect(`/items/${item.id}`);
     }
   }

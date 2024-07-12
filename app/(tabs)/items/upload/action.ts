@@ -5,15 +5,9 @@ import fs from "fs/promises";
 import db from "@/app/_libs/_server/db";
 import getSession from "@/app/_libs/_server/session";
 import { redirect } from "next/navigation";
-import { Storage } from "@google-cloud/storage";
 import AWS from "aws-sdk";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
-
-/* // Google Cloud Storage 설정
-const storage = new Storage({
-  keyFilename: "./spring-idiom-422608-a2-b800bdf6dc72.json",
-});
-const bucket = storage.bucket("carrot_project"); */
+import sharp from "sharp";
 
 //AWS 설정
 const s3 = new AWS.S3({
@@ -44,9 +38,9 @@ const itemSchema = z.object({
   }),
 });
 
-function delay(ms: number) {
+/* function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
+} */
 
 export async function uploadItem(_: any, formData: FormData) {
   const data = {
@@ -63,34 +57,26 @@ export async function uploadItem(_: any, formData: FormData) {
     data.photo = `/${data.photo.name}`;
   } */
 
-  /* 
-  GCP 설정
   if (data.photo instanceof File) {
     const photoData = await data.photo.arrayBuffer();
-    const file = bucket.file(data.photo.name);
 
-    try {
-      await file.save(Buffer.from(photoData), {
-        metadata: { contentType: data.photo.type },
-      });
-      await file.makePublic();
-      data.photo = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
-    } catch (error) {
-      console.error("Failed at this point:", error);
-    }
-  } */
+    // Sharp를 사용하여 이미지 최적화
+    const optimizedPhoto = await sharp(Buffer.from(photoData))
+      .webp({ quality: 95 }) // WebP 형식으로 변환 및 압축 품질 설정
+      .toBuffer();
 
-  if (data.photo instanceof File) {
-    const photoData = await data.photo.arrayBuffer();
+    const imgName = `${Date.now()}-${data.photo.name.split(".")[0]}.webp`;
+    //Sharp를 사용하여 webp형식으로 바꿨으니 파일명도 webp 형식으로 바꿔줌
+
     const params = {
-      Bucket: bucketName!, //bucketName이 undefined가 아님을 명시적으로 알림
-      Key: data.photo.name,
-      Body: Buffer.from(photoData),
-      ContentType: data.photo.type,
+      Bucket: bucketName!, // bucketName이 undefined가 아님을 명시적으로 알림
+      Key: imgName, // 고유한 파일 이름 생성
+      Body: optimizedPhoto,
+      ContentType: "image/webp",
     };
 
     try {
-      await delay(5000);
+      /* await delay(5000); //pending 테스트 */
 
       const uploadResult = await s3.upload(params).promise();
       data.photo = uploadResult.Location;

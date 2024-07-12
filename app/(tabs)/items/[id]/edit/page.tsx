@@ -164,7 +164,7 @@ export default function ItemEdit({ params }: { params: { id: string } }) {
         </div>
 
         <div className="fixed py-2 px-4 bottom-0 mx-auto left-0 right-0 max-w-lg z-50 bg-white border border-white">
-          <Button text="작성 완료" />
+          <Button text="작성 완료" type="upload" />
         </div>
       </form>
     </>
